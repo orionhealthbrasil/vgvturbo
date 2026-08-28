@@ -1026,14 +1026,24 @@ Deno.serve(async (req) => {
       });
 
     // Build tools: automation trigger + MCP tools (filtradas por especialização do agente)
-    const [{ data: automations }, { data: catalogSettings }] = await Promise.all([
+    const [{ data: automations }, { data: catalogSettings }, { data: orgMembers }] = await Promise.all([
       supabase.from("automations").select("id, name").eq("organization_id", organization_id).eq("is_active", true),
       supabase.from("catalog_settings").select("is_published").eq("organization_id", organization_id).maybeSingle(),
+      supabase.from("organization_members").select("user_id, role").eq("organization_id", organization_id),
     ]);
     const catalogEnabled = catalogSettings?.is_published === true;
     const enabledTools: string[] = Array.isArray(agent.enabled_tools) ? agent.enabled_tools : [];
     const baseTools = enabledTools.length > 0 ? MCP_TOOLS.filter((t) => enabledTools.includes(t.function.name)) : MCP_TOOLS;
     const tools: any[] = [...baseTools];
+    let teamMembers: { user_id: string; full_name: string | null; role: string }[] = [];
+    if (orgMembers && orgMembers.length > 0 && baseTools.some((t) => t.function?.name === "assign_contact")) {
+      const { data: memberProfiles } = await supabase
+        .from("profiles")
+        .select("user_id, full_name")
+        .in("user_id", orgMembers.map((m: any) => m.user_id));
+      const nameByUserId = new Map((memberProfiles || []).map((p: any) => [p.user_id, p.full_name]));
+      teamMembers = orgMembers.map((m: any) => ({ user_id: m.user_id, full_name: nameByUserId.get(m.user_id) || null, role: m.role }));
+    }
     if (catalogEnabled) tools.push(...CATALOG_TOOLS);
     if (automations && automations.length > 0) {
       const desc = automations.map((a: any) => `- "${a.name}" (id: ${a.id})`).join("\n");
@@ -1059,6 +1069,10 @@ Deno.serve(async (req) => {
     }
     if (baseTools.length > 0) {
       systemPrompt += `\n\n## FERRAMENTAS DO CRM: Você pode executar ações no CRM como adicionar/remover tags, mover no funil, buscar contatos (apenas as ferramentas disponíveis para você). Use quando o contexto da conversa indicar (ex: cliente interessado → adicionar tag "interessado"). O contact_id do cliente atual é: ${contact_id}`;
+    }
+    if (teamMembers.length > 0) {
+      const teamDesc = teamMembers.map((m) => `- ${m.full_name || "Sem nome"} (user_id: ${m.user_id}, papel: ${m.role})`).join("\n");
+      systemPrompt += `\n\n## ATRIBUIÇÃO DE RESPONSÁVEL (assign_contact)\nEquipe disponível:\n${teamDesc}\nAssim que o lead estiver qualificado (demonstrou interesse real, respondeu as perguntas de qualificação, ou pediu para falar com alguém/fechar negócio), chame assign_contact com o contact_id do cliente atual e o user_id do responsável adequado da lista acima${teamMembers.length === 1 ? " (único membro da equipe)" : ""}. Não deixe o contato sem responsável ao final do atendimento.`;
     }
 
     // Business hours / store status block

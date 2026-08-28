@@ -52,6 +52,7 @@ export function ProductFormDialog({ open, onOpenChange, product, organizationId 
           neighborhood: null,
           base_price: 0,
           compare_at_price: null,
+          hide_price: false,
           is_available: true,
           has_variants: false,
           category_id: null,
@@ -174,6 +175,13 @@ export function ProductFormDialog({ open, onOpenChange, product, organizationId 
                   placeholder="Opcional"
                   disabled={!!form.has_variants}
                 />
+              </div>
+              <div className="flex items-center gap-2 sm:col-span-2">
+                <Switch
+                  checked={form.hide_price ?? false}
+                  onCheckedChange={(c) => setForm({ ...form, hide_price: c })}
+                />
+                <span className="text-sm">Não exibir preço (mostra "Consultar" no lugar)</span>
               </div>
               <div className="sm:col-span-2">
                 <Label>Categoria</Label>

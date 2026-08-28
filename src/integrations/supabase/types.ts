@@ -3586,6 +3586,7 @@ export type Database = {
           created_at: string
           description: string | null
           has_variants: boolean
+          hide_price: boolean
           id: string
           images: Json
           is_available: boolean
@@ -3605,6 +3606,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           has_variants?: boolean
+          hide_price?: boolean
           id?: string
           images?: Json
           is_available?: boolean
@@ -3624,6 +3626,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           has_variants?: boolean
+          hide_price?: boolean
           id?: string
           images?: Json
           is_available?: boolean

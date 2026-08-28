@@ -42,6 +42,7 @@ export interface Product {
   neighborhood: string | null;
   base_price: number;
   compare_at_price: number | null;
+  hide_price: boolean;
   is_available: boolean;
   has_variants: boolean;
   position: number;
@@ -190,6 +191,7 @@ export function useUpsertProduct() {
         neighborhood: input.neighborhood || null,
         base_price: Number(input.base_price) || 0,
         compare_at_price: input.compare_at_price ?? null,
+        hide_price: input.hide_price ?? false,
         is_available: input.is_available ?? true,
         has_variants: input.has_variants ?? false,
         category_id: input.category_id || null,

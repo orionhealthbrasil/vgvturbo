@@ -79,7 +79,7 @@ export function CatalogItemCard({ product, onSendProduct, dragging = false, sele
       {/* Name + price */}
       <div className="min-w-0 flex-1 cursor-pointer" onClick={onToggleSelect}>
         <p className="truncate text-sm font-medium leading-tight">{product.name}</p>
-        <p className="text-xs text-muted-foreground">{brl(product.base_price)}</p>
+        <p className="text-xs text-muted-foreground">{product.hide_price ? 'Consultar' : brl(product.base_price)}</p>
         {!product.is_available && (
           <span className="text-[10px] text-destructive/70">Indisponível</span>
         )}

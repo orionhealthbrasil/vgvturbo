@@ -140,7 +140,7 @@ export default function Catalog() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {products.map((p) => {
                 const cover = p.images?.[0]?.url;
-                const promo = hasPromo(p.base_price, p.compare_at_price);
+                const promo = !p.hide_price && hasPromo(p.base_price, p.compare_at_price);
                 return (
                   <Card key={p.id} className="overflow-hidden group">
                     <div className="aspect-[4/3] bg-muted relative">
@@ -182,7 +182,7 @@ export default function Catalog() {
                         </DropdownMenu>
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="font-semibold">{brl(p.base_price)}</span>
+                        <span className="font-semibold">{p.hide_price ? 'Consultar' : brl(p.base_price)}</span>
                         {promo && (
                           <span className="text-xs text-muted-foreground line-through">
                             {brl(p.compare_at_price!)}

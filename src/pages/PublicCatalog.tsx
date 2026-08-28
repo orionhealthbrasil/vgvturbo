@@ -476,7 +476,8 @@ function FilterPill({ active, color, fg, onClick, children }: { active: boolean;
 ════════════════════════════════════════════════════════ */
 function ProductCard({ product: p, theme, showPrices, onClick }: { product: any; theme: string; showPrices: boolean; onClick: () => void }) {
   const cover = p.images?.[0]?.url;
-  const promo = hasPromo(p.base_price, p.compare_at_price);
+  const effectiveShowPrices = showPrices && !p.hide_price;
+  const promo = effectiveShowPrices && hasPromo(p.base_price, p.compare_at_price);
   const lt = p.listing_type as string | undefined;
 
   return (
@@ -526,10 +527,10 @@ function ProductCard({ product: p, theme, showPrices, onClick }: { product: any;
         )}
 
         <div className="mt-auto pt-1 flex items-baseline gap-2">
-          <span className="font-bold text-base text-gray-900" style={showPrices ? { color: theme } : undefined}>
-            {showPrices ? brl(p.base_price) : 'Consultar'}
+          <span className="font-bold text-base text-gray-900" style={effectiveShowPrices ? { color: theme } : undefined}>
+            {effectiveShowPrices ? brl(p.base_price) : 'Consultar'}
           </span>
-          {promo && showPrices && (
+          {promo && (
             <span className="text-xs text-gray-400 line-through">{brl(p.compare_at_price)}</span>
           )}
         </div>
@@ -550,7 +551,8 @@ function ProductDetail({ product, theme, fg, showPrices, onAdd, onClose }: {
   const images = product.images || [];
   const price = variant ? variant.price : product.base_price;
   const comparePrice = variant ? variant.compare_at_price : product.compare_at_price;
-  const promo = hasPromo(price, comparePrice);
+  const effectiveShowPrices = showPrices && !product.hide_price;
+  const promo = effectiveShowPrices && hasPromo(price, comparePrice);
   const lt = product.listing_type as string | undefined;
 
   return (
@@ -644,14 +646,16 @@ function ProductDetail({ product, theme, fg, showPrices, onAdd, onClose }: {
         )}
 
         {/* Price */}
-        {showPrices && (
+        {effectiveShowPrices ? (
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-bold" style={{ color: theme }}>{brl(price)}</span>
             {promo && (
               <span className="text-base text-gray-400 line-through">{brl(comparePrice)}</span>
             )}
           </div>
-        )}
+        ) : product.hide_price ? (
+          <p className="text-lg font-semibold text-gray-500">Consulte o valor com um especialista</p>
+        ) : null}
 
         {/* Description */}
         {product.description && (

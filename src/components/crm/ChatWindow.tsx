@@ -1781,7 +1781,11 @@ export function ChatWindow({ contact, onViewDetails, onPhoneClick, onBack }: Cha
     if (!contact) return;
 
     const images = [...(product.images || [])].sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
-    const priceLabel = product.is_available ? ` — ${brl(product.base_price)}` : ' (indisponível)';
+    const priceLabel = !product.is_available
+      ? ' (indisponível)'
+      : product.hide_price
+        ? ' — Consulte o valor'
+        : ` — ${brl(product.base_price)}`;
     const titleLine = `*${product.name}*${priceLabel}`;
 
     if (images.length === 0) {
