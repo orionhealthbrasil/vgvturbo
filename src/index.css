@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* VGV Turbo Design System - Professional, Trustworthy, Data-Driven */
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Vibrant Orange - Primary Brand Color */
+    --primary: 25 100% 50%;
+    --primary-foreground: 0 0% 10%;
+
+    /* Slate Gray - Secondary */
+    --secondary: 215 20% 95%;
+    --secondary-foreground: 215 25% 15%;
+
+    --muted: 215 20% 95%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Deep Navy - Accent Brand Color */
+    --accent: 216 65% 11%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 88%;
+    --input: 215 25% 88%;
+    --ring: 25 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar - Deep Slate */
+    --sidebar-background: 215 30% 12%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 25% 18%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 215 25% 18%;
+    --sidebar-ring: 160 84% 39%;
+
+    /* Defect Colors */
+    --defect-delay: 45 93% 47%;
+    --defect-no-response: 0 84% 60%;
+    --defect-rude: 280 65% 60%;
+    --defect-incorrect: 217 91% 50%;
+    --defect-other: 215 16% 47%;
+
+    /* Chart Colors - Emerald variations */
+    --chart-1: 160 84% 39%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 280 65% 60%;
+    --chart-4: 45 93% 47%;
+    --chart-5: 0 84% 60%;
+
+    /* WhatsApp-style Chat Colors */
+    --chat-outbound: 142 70% 49%;
+    --chat-outbound-hover: 158 64% 36%;
+    --chat-inbound: 0 0% 100%;
+    --chat-bg: 30 14% 89%;
+
+    /* Status Colors */
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 10%;
+  }
+
+  .dark {
+    --background: 215 30% 8%;
+    --foreground: 210 20% 98%;
+
+    --card: 215 30% 10%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 215 30% 10%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 25 100% 60%;
+    --primary-foreground: 0 0% 10%;
+
+    --secondary: 215 25% 18%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 215 25% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 216 65% 21%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 215 25% 18%;
+    --input: 215 25% 18%;
+    --ring: 25 100% 60%;
+
+    --sidebar-background: 215 30% 6%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 25% 15%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 215 25% 15%;
+    --sidebar-ring: 160 84% 39%;
+
+    /* WhatsApp-style Chat Colors - Dark mode */
+    --chat-outbound: 142 70% 49%;
+    --chat-outbound-hover: 158 64% 36%;
+    --chat-inbound: 215 30% 15%;
+    --chat-bg: 215 30% 12%;
+
+    /* Status Colors - Dark mode */
+    --success: 142 70% 50%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 93% 52%;
+    --warning-foreground: 0 0% 10%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm;
+  }
+  
+  .defect-delay {
+    @apply bg-amber-100 text-amber-800 border-amber-200;
+  }
+  
+  .defect-no-response {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+  
+  .defect-rude {
+    @apply bg-purple-100 text-purple-800 border-purple-200;
+  }
+  
+  .defect-incorrect {
+    @apply bg-blue-100 text-blue-800 border-blue-200;
+  }
+  
+  .defect-other {
+    @apply bg-gray-100 text-gray-800 border-gray-200;
+  }
+
+  /* Indeterminate progress animation for upload */
+  @keyframes progress-indeterminate {
+    0% {
+      transform: translateX(-100%);
+      width: 50%;
+    }
+    50% {
+      transform: translateX(50%);
+      width: 50%;
+    }
+    100% {
+      transform: translateX(200%);
+      width: 50%;
+    }
+  }
+
+  .animate-progress-indeterminate {
+    animation: progress-indeterminate 1.5s ease-in-out infinite;
+  }
+
+  /* React Flow Handle Styles */
+  .react-flow__handle {
+    z-index: 10;
+    pointer-events: all !important;
+  }
+
+  .react-flow__handle:hover {
+    transform: scale(1.3);
+  }
+
+  .react-flow__handle.connecting {
+    background: hsl(var(--primary)) !important;
+  }
+
+  .react-flow__handle.valid {
+    background: hsl(var(--status-success)) !important;
+  }
+
+  /* Ensure nodes don't block handle interactions */
+  .react-flow__node {
+    pointer-events: all;
+  }
+
+  .react-flow__node .react-flow__handle {
+    cursor: crosshair;
+  }
+
+  /* Connection line styling */
+  .react-flow__connection-line {
+    stroke: hsl(var(--primary));
+    stroke-width: 2;
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE public.ai_agents ADD COLUMN department text NOT NULL DEFAULT 'Vendas';

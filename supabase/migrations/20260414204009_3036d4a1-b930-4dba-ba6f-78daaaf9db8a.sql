@@ -1,0 +1,1 @@
+ALTER TABLE public.messages ADD COLUMN ai_agent_id uuid REFERENCES public.ai_agents(id) ON DELETE SET NULL DEFAULT NULL;

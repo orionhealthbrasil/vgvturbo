@@ -1,0 +1,118 @@
+project_id = "welindpmuqdnuazgaetz"
+
+[functions.create-review]
+verify_jwt = false
+
+[functions.stevo-connect]
+verify_jwt = false
+
+[functions.stevo-disconnect]
+verify_jwt = false
+
+[functions.stevo-status]
+verify_jwt = false
+
+[functions.stevo-webhook]
+verify_jwt = false
+
+[functions.stevo-send-message]
+verify_jwt = false
+
+[functions.stevo-send-media]
+verify_jwt = false
+
+[functions.stevo-delete-message]
+verify_jwt = false
+
+[functions.stevo-set-webhook]
+verify_jwt = false
+
+[functions.automation-engine]
+verify_jwt = false
+
+[functions.resume-delayed-flows]
+verify_jwt = false
+
+[functions.audit-conversation]
+verify_jwt = false
+
+[functions.monitor-sla-guardian]
+verify_jwt = false
+
+[functions.send-sla-test-alert]
+verify_jwt = false
+
+[functions.wake-up-snoozed-chats]
+verify_jwt = false
+
+[functions.fetch-profile-picture]
+verify_jwt = false
+
+[functions.send-scheduled-messages]
+verify_jwt = false
+
+[functions.process-broadcast]
+verify_jwt = false
+
+[functions.stevo-send-sticker]
+verify_jwt = false
+
+[functions.stevo-edit-message]
+verify_jwt = false
+
+[functions.audit-callback]
+verify_jwt = false
+
+[functions.ai-agent-respond]
+verify_jwt = false
+
+[functions.ai-system-agent]
+verify_jwt = false
+
+[functions.transcribe-media]
+verify_jwt = false
+
+[functions.notify-support-ticket]
+verify_jwt = false
+
+[functions.send-resend-email]
+verify_jwt = false
+
+[functions.submit-public-form]
+verify_jwt = false
+
+[functions.payment-webhook]
+verify_jwt = false
+
+[functions.submit-public-booking]
+verify_jwt = false
+
+[functions.process-booking-reminders]
+verify_jwt = false
+
+[functions.ai-sdr-generate]
+verify_jwt = false
+
+[functions.instagram-webhook]
+verify_jwt = false
+
+[functions.instagram-oauth-callback]
+verify_jwt = false
+
+[functions.instagram-send-message]
+verify_jwt = false
+
+[functions.instagram-publish-post]
+verify_jwt = false
+
+[functions.instagram-get-insights]
+verify_jwt = false
+
+[functions.instagram-auth-config]
+verify_jwt = false
+
+[functions.whatsapp-meta-webhook]
+verify_jwt = false
+
+[functions.whatsapp-meta-send]
+verify_jwt = false

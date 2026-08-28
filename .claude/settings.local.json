@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sort -k5 -n -r)",
+      "Bash(curl -s -X POST https://api.supabase.com/v1/projects/atnjikvdbvyvyabsxctj/database/query -H 'Authorization: Bearer sbp_00c736740c9d86250d7fdc82ae4baf0e9ae7d5a7' -H 'Content-Type: application/json' -d '{\"query\": \"SELECT 1 as test;\"}')"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE public.contacts ADD COLUMN is_archived BOOLEAN NOT NULL DEFAULT false;

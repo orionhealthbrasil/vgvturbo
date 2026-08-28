@@ -1,0 +1,2 @@
+ALTER TABLE public.organizations
+ADD COLUMN closed_hours_message text DEFAULT 'Estamos fechados no momento, mas você já pode adiantar sua demanda (enviar detalhes, dúvidas ou informações relevantes) para agilizar o atendimento quando a equipe retornar.';

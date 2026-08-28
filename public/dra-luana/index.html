@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dra. Luana Figuerêdo — Endocrinologista em Feira de Santana</title>
+<meta name="description" content="Dra. Luana Machado Figuerêdo, endocrinologista em Feira de Santana. Diabetes, tireoide, obesidade, saúde hormonal na gestação, menopausa e população trans." />
+<link rel="icon" type="image/png" href="img/logo/favicon.png" />
+<link rel="apple-touch-icon" href="img/logo/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* oficiais: creme-tan #E7DBB9, creme-claro #F8F6D6, conhaque #7D6235,
+       oliva #796B2D, mostarda #CCBA6D, sálvia #E5EFDA, oliva-dourado #AFA86C
+       — folha de paleta da agência */
+    --bg: #E7DBB9;
+    --surface: #F8F6D6;
+    --surface-line: #D9C89C;
+    --ink: #141006;
+    --ink-soft: #7D6235;
+    --accent: #CCBA6D;
+    --accent-ink: #141006;
+    --olive: #796B2D;
+    --olive-ink: #F8F6D6;
+    --sage: #E5EFDA;
+    --gold2: #AFA86C;
+
+    /* seções imersivas escuras — fixas nos dois temas (é cor de marca, não de tema) */
+    --deep: #221C0D;
+    --deep-2: #2C2410;
+    --deep-ink: #F8F6D6;
+    --deep-muted: rgba(248, 246, 214, 0.62);
+    --deep-line: rgba(248, 246, 214, 0.12);
+    --deep-card: rgba(248, 246, 214, 0.045);
+
+    --radius-lg: 28px;
+    --radius-md: 20px;
+
+    --font-serif: "Fraunces", ui-serif, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-sans: "Instrument Sans", ui-sans-serif, "Segoe UI", Roboto, system-ui, sans-serif;
+
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-bg-strong: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.65);
+    --glass-shadow: 0 24px 60px -28px rgba(46, 35, 10, 0.5), 0 2px 10px rgba(46, 35, 10, 0.06);
+    --glass-shadow-sm: 0 14px 34px -18px rgba(46, 35, 10, 0.45);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1C1710;
+      --surface: #26200F;
+      --surface-line: #3A3018;
+      --ink: #F8F6D6;
+      --ink-soft: #CCBA6D;
+      --accent: #D6C482;
+      --accent-ink: #1C1710;
+      --olive: #796B2D;
+      --olive-ink: #F8F6D6;
+      --sage: #3A4230;
+      --gold2: #AFA86C;
+      --glass-bg: rgba(45, 38, 20, 0.5);
+      --glass-bg-strong: rgba(45, 38, 20, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.65), 0 2px 10px rgba(0, 0, 0, 0.3);
+      --glass-shadow-sm: 0 14px 34px -18px rgba(0, 0, 0, 0.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1C1710; --surface: #26200F; --surface-line: #3A3018;
+    --ink: #F8F6D6; --ink-soft: #CCBA6D; --accent: #D6C482;
+    --accent-ink: #1C1710; --olive: #796B2D; --olive-ink: #F8F6D6;
+    --sage: #3A4230; --gold2: #AFA86C;
+    --glass-bg: rgba(45, 38, 20, 0.5); --glass-bg-strong: rgba(45, 38, 20, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.65), 0 2px 10px rgba(0, 0, 0, 0.3);
+    --glass-shadow-sm: 0 14px 34px -18px rgba(0, 0, 0, 0.55);
+  }
+  :root[data-theme="light"] {
+    --bg: #E7DBB9; --surface: #F8F6D6; --surface-line: #D9C89C;
+    --ink: #141006; --ink-soft: #7D6235; --accent: #CCBA6D;
+    --accent-ink: #141006; --olive: #796B2D; --olive-ink: #F8F6D6;
+    --sage: #E5EFDA; --gold2: #AFA86C;
+    --glass-bg: rgba(255, 255, 255, 0.4); --glass-bg-strong: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.65);
+    --glass-shadow: 0 24px 60px -28px rgba(46, 35, 10, 0.5), 0 2px 10px rgba(46, 35, 10, 0.06);
+    --glass-shadow-sm: 0 14px 34px -18px rgba(46, 35, 10, 0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { overflow-x: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* grão de papel fino sobre a página toda — eco das texturas de papel /
+     linho dos renders de embalagem da marca */
+  /* sem mix-blend-mode de propósito: um overlay fixo com blend força o
+     navegador a recompor a página inteira a cada frame de scroll (era a
+     maior fonte de travamento). Opacidade baixa dá quase o mesmo grão. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+  @media (prefers-color-scheme: dark) { body::after { opacity: 0.05; } }
+  :root[data-theme="dark"] body::after { opacity: 0.05; }
+  :root[data-theme="light"] body::after { opacity: 0.035; }
+
+  a { color: inherit; }
+  img { max-width: 100%; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 1.75rem; }
+
+  /* ---------- blobs decorativos ---------- */
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-accent { background: radial-gradient(circle at 35% 35%, var(--accent), transparent 70%); opacity: 0.32; }
+  .blob-olive { background: radial-gradient(circle at 35% 35%, var(--olive), transparent 70%); opacity: 0.22; }
+  .blob-sage { background: radial-gradient(circle at 35% 35%, var(--gold2), transparent 70%); opacity: 0.24; }
+
+  /* ---------- primitivas de vidro ---------- */
+
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .tilt { transform-style: preserve-3d; will-change: transform; }
+
+  /* ---------- badges de ícone ---------- */
+
+  .icon-badge {
+    width: 58px;
+    height: 58px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 14px 26px -10px rgba(20, 15, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.65), inset 0 -8px 12px -6px rgba(0, 0, 0, 0.18);
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .icon-badge svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-badge.badge-accent { background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 100%, white 25%), var(--accent) 55%, color-mix(in srgb, var(--olive) 55%, var(--accent))); color: #2c2409; }
+  .icon-badge.badge-olive { background: linear-gradient(150deg, color-mix(in srgb, var(--olive) 100%, white 18%), var(--olive) 55%, #443a15); color: var(--surface); }
+  .icon-badge.badge-sage { background: linear-gradient(150deg, #ffffff, var(--sage) 55%, color-mix(in srgb, var(--sage) 60%, var(--olive))); color: var(--olive); }
+  .icon-badge.badge-gold { background: linear-gradient(150deg, color-mix(in srgb, var(--gold2) 100%, white 22%), var(--gold2) 55%, #726a3f); color: #241f0a; }
+
+  /* ---------- header ---------- */
+
+  /* fixed (não sticky) porque o ScrollSmoother transforma o conteúdo —
+     sticky quebraria dentro do wrapper; o header vive fora dele */
+  header.site {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1.1rem 1.25rem 0;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.6rem 0.7rem 0.6rem 1.35rem;
+    max-width: 1180px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+    transition: box-shadow 0.3s ease;
+  }
+  header.site.is-scrolled .site-nav { box-shadow: var(--glass-shadow); }
+
+  .brand { display: flex; align-items: center; }
+  .brand img { height: 38px; width: auto; display: block; }
+
+  nav.links { display: flex; gap: 1.9rem; font-size: 0.86rem; }
+  nav.links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.2s ease;
+  }
+  nav.links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%;
+    bottom: -2px;
+    height: 1.5px;
+    background: var(--accent);
+    transition: right 0.25s ease;
+  }
+  nav.links a:hover, nav.links a:focus-visible, nav.links a.active { color: var(--ink); }
+  nav.links a:hover::after, nav.links a:focus-visible::after, nav.links a.active::after { right: 0; }
+
+  @media (max-width: 820px) { nav.links { display: none; } }
+
+  /* telas bem estreitas: aperta o header pra "Agendar consulta" não quebrar
+     em duas linhas (o que engordava a pílula e ela invadia a foto) */
+  @media (max-width: 420px) {
+    header.site { padding: 0.9rem 0.9rem 0; }
+    .site-nav { padding: 0.5rem 0.5rem 0.5rem 1rem; gap: 0.75rem; }
+    .site-nav .btn { padding: 0.7rem 1rem; font-size: 0.7rem; letter-spacing: 0.06em; white-space: nowrap; }
+    .brand img { height: 32px; }
+  }
+
+  /* ---------- botões ---------- */
+
+  .btn, .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 14px 28px -12px color-mix(in srgb, var(--accent) 70%, black 10%); }
+  .btn-primary:hover, .btn-primary:focus-visible { background: color-mix(in srgb, var(--accent) 88%, black 6%); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid color-mix(in srgb, var(--ink-soft) 60%, transparent);
+  }
+  .btn-outline:hover, .btn-outline:focus-visible {
+    border-color: var(--ink-soft);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .btn:focus-visible, .btn-outline:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- tipografia ---------- */
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin: 0 0 1.4rem;
+  }
+  .eyebrow::before { content: ""; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--accent); }
+
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 480;
+    font-size: clamp(2.5rem, 5.6vw, 4.1rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin: 0 0 1.5rem;
+  }
+  h1 em, .h1-accent { font-style: italic; color: color-mix(in srgb, var(--ink-soft) 55%, var(--accent)); }
+  h1 .w { display: inline-block; }
+
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(1.85rem, 3.6vw, 2.6rem);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--ink-soft) 55%, var(--accent));
+    font-weight: 700;
+    margin: 0 0 0.9rem;
+  }
+
+  section { position: relative; }
+  .section-pad { padding: 6.5rem 0; }
+
+  .section-head { max-width: 38rem; position: relative; z-index: 1; margin: 0 0 3.2rem; }
+  .section-head p { color: var(--ink-soft); margin: 0; font-size: 1.02rem; }
+
+  /* cabeçalho de seção em duas colunas (editorial) */
+  .section-head-split {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+    align-items: end;
+    margin: 0 0 3.4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .section-head-split p { color: var(--ink-soft); margin: 0 0 0.4rem; font-size: 1.02rem; }
+  .section-head-split h2 { margin-bottom: 0; }
+  @media (max-width: 820px) { .section-head-split { grid-template-columns: 1fr; gap: 1rem; align-items: start; } }
+
+  /* ---------- hero ---------- */
+
+  /* hero full-bleed: a foto da Dra. Luana É o fundo da seção; um overlay de
+     gradiente (cor do tema) garante a leitura do texto no lado esquerdo */
+  .hero {
+    position: relative;
+    overflow: clip;
+    min-height: min(92vh, 880px);
+    display: flex;
+    align-items: center;
+  }
+  /* deslocada pra baixo do header flutuante (que é fixed e passaria por
+     cima do rosto dela); o excesso embaixo é cortado pelo overflow:clip
+     do .hero, e o topo desvanece pra emendar no fundo do tema */
+  .hero-bg { position: absolute; inset: 0; top: 3.6rem; bottom: -3.6rem; z-index: 0; }
+  .hero-bg picture { display: block; width: 100%; height: 100%; }
+  .hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 74% 22%;
+    display: block;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 5%);
+    mask-image: linear-gradient(to bottom, transparent 0, black 5%);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to right,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 88%, transparent) 30%,
+        color-mix(in srgb, var(--bg) 40%, transparent) 48%,
+        transparent 64%),
+      linear-gradient(to top, color-mix(in srgb, var(--bg) 70%, transparent), transparent 22%);
+    pointer-events: none;
+  }
+
+  /* padding-top/bottom separados de propósito: esse elemento também tem a
+     classe .container, e o atalho `padding` zerava o padding lateral dela
+     (o conteúdo ficava colado na borda) */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-top: 7rem;
+    padding-bottom: 5rem;
+  }
+  .hero-text { max-width: 35rem; }
+  .hero-sub { font-size: 1.08rem; color: var(--ink-soft); max-width: 31rem; margin: 0 0 2.4rem; }
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  .hero-chip {
+    position: absolute;
+    left: 53%;
+    bottom: 9%;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+    z-index: 2;
+  }
+  .hero-chip .stars { color: color-mix(in srgb, var(--ink-soft) 40%, var(--accent)); letter-spacing: 0.12em; font-size: 0.78rem; }
+  .hero-chip small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 0.72rem; }
+
+  @media (max-width: 900px) {
+    .hero { min-height: 0; }
+    /* no mobile a foto NÃO cobre a seção inteira — vira um "teto" de altura
+       fixa que desvanece, e o texto entra abaixo, no fundo do tema. Começa
+       abaixo do header pra não cobrir o rosto dela, e usa a foto vertical
+       original (ver <picture>), não a versão esticada do desktop */
+    .hero-bg {
+      inset: auto;
+      top: 5.5rem;
+      left: 0;
+      right: 0;
+      height: 26rem;
+    }
+    .hero-bg img {
+      object-position: center top;
+      -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent 98%);
+      mask-image: linear-gradient(to bottom, black 72%, transparent 98%);
+    }
+    .hero-overlay { display: none; }
+    .hero-content { padding-top: 31rem; padding-bottom: 3.5rem; }
+    .hero-chip {
+      position: static;
+      display: inline-flex;
+      margin-top: 1.6rem;
+    }
+  }
+
+  /* ---------- faixa de credenciais (ref-2) ---------- */
+
+  .strip {
+    background: var(--olive);
+    color: var(--olive-ink);
+    position: relative;
+    z-index: 2;
+  }
+  /* padding-top/bottom separados: esse elemento também é .container e o
+     atalho `padding` zerava o padding lateral dela */
+  .strip-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem 2.4rem;
+    flex-wrap: wrap;
+    padding-top: 1.35rem;
+    padding-bottom: 1.35rem;
+  }
+  .strip-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--olive-ink) 88%, transparent);
+    white-space: nowrap;
+  }
+  .strip-item svg { width: 17px; height: 17px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+  @media (max-width: 900px) { .strip-row { justify-content: flex-start; } }
+
+  /* ---------- áreas (seção imersiva escura, ref-3) ---------- */
+
+  .areas {
+    background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 60%, var(--deep) 100%);
+    color: var(--deep-ink);
+    overflow: hidden;
+  }
+  .areas .section-eyebrow { color: var(--accent); }
+  .areas h2 { color: var(--deep-ink); }
+  .areas .section-head-split p { color: var(--deep-muted); }
+
+  .areas-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.3rem;
+  }
+
+  .area {
+    background: var(--deep-card);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--deep-line);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.8rem;
+    transition: transform 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  /* spotlight dourado que segue o cursor (--mx/--my setados via JS) */
+  .area::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    background: radial-gradient(230px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(204, 186, 109, 0.16), transparent 65%);
+  }
+  .area:hover::after { opacity: 1; }
+  .area:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    background: rgba(248, 246, 214, 0.07);
+  }
+
+  .area h3 {
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+    color: var(--deep-ink);
+  }
+  .area p { font-size: 0.9rem; color: var(--deep-muted); margin: 0; line-height: 1.65; }
+
+  /* ---------- sobre ---------- */
+
+  .about {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 4.5rem;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 900px) {
+    .about { grid-template-columns: 1fr; gap: 3rem; }
+    /* sem isso a coluna `1fr` não encolhe abaixo do min-content (uma palavra
+       longa nos stat-cards esticava o grid pra fora da margem do container) */
+    .about > * { min-width: 0; }
+  }
+
+  .portrait-wrap { position: relative; }
+  .portrait-frame {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 30px 70px -28px rgba(20, 15, 0, 0.4);
+  }
+  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+
+  /* stat-cards de vidro sobrepondo a foto (ref-3) */
+  .stat-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: -3.2rem 1.2rem 0;
+    position: relative;
+    z-index: 2;
+  }
+  .stat-card {
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    backdrop-filter: blur(18px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+  }
+  .stat-card .num {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 550;
+    line-height: 1.1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-card .lbl { font-size: 0.74rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; margin-top: 0.2rem; }
+
+  /* em tela estreita os dois cards lado a lado ficam apertados demais
+     (rótulos como "ESPECIALIZAÇÃO" não cabem) — empilha */
+  @media (max-width: 520px) {
+    .stat-cards { grid-template-columns: 1fr; margin-left: 0.9rem; margin-right: 0.9rem; }
+  }
+
+  .about-body p { margin: 0 0 1.15rem; color: var(--ink-soft); font-size: 1.02rem; }
+  .about-body strong { color: var(--ink); font-weight: 600; }
+
+  .timeline { list-style: none; margin: 2rem 0 0; padding: 0; }
+  .timeline li { display: flex; align-items: center; gap: 1.2rem; padding: 0.72rem 0; font-size: 0.9rem; border-bottom: 1px solid color-mix(in srgb, var(--surface-line) 55%, transparent); }
+  .timeline li:last-child { border-bottom: none; }
+  .timeline .year {
+    flex: 0 0 auto;
+    color: var(--accent-ink);
+    background: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    padding: 0.28rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    letter-spacing: 0.03em;
+  }
+  .timeline .what { color: var(--ink-soft); }
+
+  /* ---------- depoimentos (marquee) ---------- */
+
+  .depos { background: var(--surface); border-top: 1px solid var(--surface-line); border-bottom: 1px solid var(--surface-line); overflow: hidden; }
+
+  .depo-marquee {
+    position: relative;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  }
+  .depo-track {
+    display: flex;
+    gap: 1.3rem;
+    width: max-content;
+    padding: 0.5rem 1.75rem 1.5rem;
+    flex-wrap: wrap; /* fallback sem JS/reduced-motion: vira grade */
+    width: auto;
+  }
+  .marquee-active .depo-track { flex-wrap: nowrap; width: max-content; }
+  .depo-set { display: contents; }
+  .marquee-active .depo-set { display: flex; gap: 1.3rem; }
+
+  .depo {
+    width: 100%;
+    max-width: 380px;
+    background: var(--bg);
+    border: 1px solid var(--surface-line);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem 1.7rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .marquee-active .depo { width: 380px; }
+  .depo::before {
+    content: "“";
+    position: absolute;
+    top: 0.3rem;
+    right: 1.1rem;
+    font-family: var(--font-serif);
+    font-size: 3.6rem;
+    color: var(--accent);
+    opacity: 0.4;
+    line-height: 1;
+  }
+  .depo blockquote { margin: 0; font-size: 0.93rem; line-height: 1.65; color: var(--ink); flex: 1; position: relative; z-index: 1; }
+  .depo footer { display: flex; align-items: center; gap: 0.8rem; }
+  .depo .avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 100%, white 20%), var(--accent) 60%, var(--gold2));
+    color: #2c2409;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+  }
+  .depo .who { font-size: 0.84rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .depo .who small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 0.72rem; }
+  .depo .stars { color: color-mix(in srgb, var(--ink-soft) 35%, var(--accent)); font-size: 0.8rem; letter-spacing: 0.14em; }
+
+  /* ---------- comunidade ---------- */
+
+  .community {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--olive) 92%, black 4%);
+    color: var(--olive-ink);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3.4rem 3rem;
+    display: grid;
+    grid-template-columns: 1.35fr auto auto;
+    align-items: center;
+    gap: 2.5rem;
+    box-shadow: var(--glass-shadow);
+  }
+  @media (max-width: 980px) { .community { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (max-width: 640px) {
+    .community { padding: 2.4rem 1.6rem; }
+    .community-head { flex-direction: column; gap: 1.1rem; }
+  }
+  .community > *:not(.blob) { position: relative; z-index: 1; }
+  .community-head { display: flex; align-items: flex-start; gap: 1.3rem; }
+  .community .icon-badge { margin-bottom: 0; background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 100%, white 20%), var(--accent) 60%, #574c1e); color: #241f0a; }
+  .community h2 { color: var(--olive-ink); margin-bottom: 0.6rem; }
+  .community .section-eyebrow { color: color-mix(in srgb, var(--olive-ink) 70%, var(--accent)); }
+  .community p { color: color-mix(in srgb, var(--olive-ink) 85%, transparent); margin: 0; font-size: 0.98rem; max-width: 30rem; }
+  .community .stat {
+    font-family: var(--font-serif);
+    font-size: 3.2rem;
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .community .stat-label { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; margin-top: 0.4rem; }
+  .community-cta { background: var(--accent); color: var(--accent-ink); justify-self: start; }
+  .community-cta:hover { background: color-mix(in srgb, var(--accent) 88%, black 6%); }
+
+  /* ---------- onde atender (mapa) ---------- */
+
+  .local-grid {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 3.5rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 900px) { .local-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+  .local-info { display: flex; flex-direction: column; gap: 1.8rem; align-items: flex-start; }
+  .local-address { display: flex; align-items: flex-start; gap: 1rem; }
+  .local-address svg {
+    width: 22px; height: 22px; flex: 0 0 auto; margin-top: 0.2rem;
+    fill: none; stroke: color-mix(in srgb, var(--ink-soft) 40%, var(--accent)); stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .local-address .lines { display: flex; flex-direction: column; gap: 0.3rem; }
+  .local-address strong { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 500; color: var(--ink); }
+  .local-address span { color: var(--ink-soft); font-size: 0.94rem; }
+  .local-note { color: var(--ink-soft); font-size: 0.94rem; max-width: 24rem; margin: 0; }
+
+  /* moldura igual à do retrato em Sobre — o mapa segue a mesma linguagem
+     visual de "foto emoldurada" pra não parecer um widget genérico colado */
+  .map-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 30px 70px -28px rgba(20, 15, 0, 0.4);
+  }
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    /* duotone dourado/oliva pra combinar com a paleta em vez do azul/verde
+       padrão do Google Maps — some com a variação de tema abaixo */
+    filter: grayscale(0.4) sepia(0.5) hue-rotate(-8deg) saturate(1.5) brightness(0.98) contrast(1.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    .map-frame iframe { filter: grayscale(0.5) sepia(0.35) hue-rotate(-8deg) saturate(1.1) brightness(0.72) contrast(1.12); }
+  }
+  :root[data-theme="dark"] .map-frame iframe { filter: grayscale(0.5) sepia(0.35) hue-rotate(-8deg) saturate(1.1) brightness(0.72) contrast(1.12); }
+  :root[data-theme="light"] .map-frame iframe { filter: grayscale(0.4) sepia(0.5) hue-rotate(-8deg) saturate(1.5) brightness(0.98) contrast(1.05); }
+
+  .map-chip {
+    position: absolute;
+    left: 1.1rem;
+    bottom: 1.1rem;
+    padding: 0.65rem 1.05rem;
+    border-radius: 999px;
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ---------- contato ---------- */
+
+  .contato-panel {
+    position: relative;
+    z-index: 1;
+    padding: 3.4rem 3rem;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 900px) { .contato-panel { grid-template-columns: 1fr; padding: 2.4rem 1.8rem; } }
+  .contato-panel h2 { margin-bottom: 0.9rem; }
+  .contato-panel .lead { color: var(--ink-soft); margin: 0 0 2rem; font-size: 1.02rem; }
+  .contato-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .contato-info { display: flex; flex-direction: column; gap: 1.1rem; border-left: 1px solid var(--surface-line); padding-left: 2.4rem; }
+  @media (max-width: 900px) { .contato-info { border-left: none; padding-left: 0; border-top: 1px solid var(--surface-line); padding-top: 1.6rem; } }
+  .contato-info .item { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 0.92rem; color: var(--ink-soft); text-decoration: none; }
+  .contato-info .item a { color: var(--ink); text-decoration: none; font-weight: 600; }
+  .contato-info a.item:hover, .contato-info .item a:hover { color: var(--ink); }
+  .contato-info svg { width: 18px; height: 18px; fill: none; stroke: color-mix(in srgb, var(--ink-soft) 45%, var(--accent)); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; margin-top: 0.15rem; }
+
+  /* ---------- footer ---------- */
+
+  footer.site {
+    background: color-mix(in srgb, var(--surface) 60%, var(--bg));
+    border-top: 1px solid var(--surface-line);
+    padding: 4rem 0 0;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+  }
+  @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; gap: 2.2rem; } }
+
+  .footer-brand img.mono { height: 46px; width: auto; display: block; margin-bottom: 1.1rem; opacity: 0.9; }
+  .footer-brand p { margin: 0; max-width: 20rem; font-size: 0.86rem; }
+
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 1.1rem;
+    font-weight: 700;
+  }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col a { text-decoration: none; color: var(--ink-soft); }
+  .footer-col a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--surface-line);
+    padding: 1.4rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+  }
+
+  /* ---------- preloader (assinatura do monograma) ---------- */
+
+  .intro-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 998; /* abaixo do grão (999) pra herdar a textura de papel */
+    background: var(--bg);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .intro-veil.on { display: flex; }
+  .intro-veil svg { width: min(160px, 34vw); height: auto; overflow: visible; }
+
+  /* ---------- helpers ---------- */
+  .on-photo-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- véu de abertura: o monograma LF se desenha como assinatura (só aparece
+     via JS — sem GSAP a classe .on nunca é adicionada e nada bloqueia) -->
+<div class="intro-veil" aria-hidden="true">
+  <svg viewBox="188 47 626 738" xmlns="http://www.w3.org/2000/svg">
+    <path id="lf-path" transform="matrix(.1,0,0,-.1,0,842.54)" vector-effect="non-scaling-stroke"
+      fill="#7D6235" fill-opacity="0" stroke="#7D6235" stroke-width="2.5"
+      d="M7990.69 5543.1 7940.09 5550.58C6883.39 5713.72 5830.45 5235.16 5191.69 4302.08 4930.33 3920.15 4761.35 3505.19 4683.76 3291.45 4679.55 3279.39 4660.62 3224.11 4634.33 3146.84L4555.1 2910.18 3407.06 2890.17C4114 3526.89 4432.04 4545.19 4739.75 5530.37 4839.32 5849.26 4933.37 6150.37 5038.8 6431.55L5044.55 6446.99C5249.27 6993.45 5504.07 7673.5 6164.06 7702.31L6203.53 7704.09 6209.33 7743.19C6212.98 7767.88 6206.48 7790.53 6191.05 7806.89 6161.48 7838.04 6115.08 7833.84 6077.76 7830.19 6069.86 7829.44 6062.47 7828.68 6056.53 7828.68 5572.64 7828.13 5188.98 7533.19 4916.16 6952.2 4757.05 6613.68 4612.3 6150.83 4459.03 5660.96 4103.15 4523.31 3699.75 3233.93 2943.13 2831.51 2863.73 2789.41 2776.36 2755.08 2683.84 2718.79 2472.72 2635.92 2254.4 2550.23 2112.49 2360.8L2000.42 2211.33 2170.58 2288.51C2242.66 2321.14 2310.24 2360.24 2375.58 2398.04 2453.87 2443.3 2527.81 2486.06 2610.13 2519.74 2689.04 2552.01 2771.07 2579.98 2854.08 2602.98L2861.01 2604.76C3053.72 2658.06 3252.94 2687.02 3453.89 2703.44 3599.92 2715.37 4472.03 2731.61 4494.43 2731.52L4478.44 2683.99C4443.59 2579.69 4416.27 2497.57 4409.31 2475.49 4283.49 2076.54 4153.38 1663.93 3977.52 1284.05 3896.71 1109.5 3799.23 932.148 3634.27 817.09L3500.46 723.359C3540.89 718.301 3581.34 713.262 3621.78 708.211 3666.36 706.879 3748.47 710.91 3835.17 756.09 3876.35 777.551 3907.85 802.711 3930.71 824.41L3930.7 824.43C3932.48 827.301 4010.01 899.77 4065.93 986.711 4140.29 1102.32 4199.82 1244.26 4219.47 1289.38 4332.47 1578.33 4429.89 1876.73 4535.55 2200.39L4710.47 2737.22C4711.85 2737.17 5601.05 2770.55 5617.12 2772.3 5657.48 2776.7 5669.98 2778.47 5691.81 2781.66L5727.64 2786.7C5776.8 2793.53 5807.71 2822.72 5804.58 2859.38 5802.61 2881.93 5788.58 2918.32 5706.83 2916.44L5689.28 2915.8C5615.57 2913.36 5544.49 2910.92 5509.88 2910.74 5469.23 2910.45 5388.88 2908.5 5304.83 2906.54 5241.96 2904.98 4826.98 2907.93 4772.9 2908.5 4772.96 2908.69 4773 2908.77 4773.09 2908.96 4781.23 2934.87 4789.37 2960.87 4792.6 2969.02L4839.75 3083.42C5052.65 3584.34 5408.95 4422.85 6122.25 4929.64 6696.92 5337.77 7356.62 5416.16 7824.7 5407.27 7816.47 4863.52 7660.21 4363.15 7371.5 3957.85L7349.47 3927.54C7108.78 3600.99 6787.65 3352.06 6444.97 3226.35L6395.06 3207.64 6405.16 3155.91C6410.4 3128.13 6426.58 3106.05 6450.07 3094.17 6500.48 3067.98 6563.94 3092.86 6629.57 3122.89L6641.64 3128.41C6971.47 3266.29 7256.1 3500.8 7487.58 3825.2L7509.84 3856.44C7514.71 3863.55 7519.52 3870.66 7522.56 3875.72 7530.09 3886.29 7537.3 3897.23 7544.45 3908.17 7845.65 4367.65 8013.42 4959.3 7993.22 5490.71L7990.69 5543.1" />
+  </svg>
+</div>
+
+<header class="site">
+  <div class="site-nav">
+    <a href="#top" class="brand"><img src="img/logo/logo-monograma.png" alt="Dra. Luana Figuerêdo" /></a>
+    <nav class="links">
+      <a href="#areas" data-spy="areas">Áreas de atuação</a>
+      <a href="#sobre" data-spy="sobre">Sobre</a>
+      <a href="#depoimentos" data-spy="depoimentos">Depoimentos</a>
+      <a href="#local" data-spy="local">Onde atender</a>
+      <a href="#contato" data-spy="contato">Contato</a>
+    </nav>
+    <a class="btn btn-primary" href="https://wa.me/5575999682044?text=Ol%C3%A1%2C%20Dra.%20Luana%21%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" rel="noopener">Agendar consulta</a>
+  </div>
+</header>
+
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <picture>
+        <!-- no celular usa a foto vertical original (enquadramento natural,
+             ela centralizada); no desktop, a versão expandida na horizontal -->
+        <source media="(max-width: 900px)" srcset="img/hero-mobile.jpg" />
+        <img src="img/hero-bg.jpg" alt="Dra. Luana Figuerêdo em pé, de braços cruzados, vestindo blazer creme" />
+      </picture>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <p class="eyebrow">Endocrinologista &middot; Feira de Santana</p>
+        <h1 aria-label="Hormônios não seguem cartilha. Seu tratamento também não deveria.">
+          <span aria-hidden="true"><span class="w">Hormônios</span> <span class="w">não</span> <span class="w">seguem</span> <span class="w">cartilha.</span><br />
+          <em><span class="w">Seu</span> <span class="w">tratamento</span> <span class="w">também</span> <span class="w">não</span> <span class="w">deveria.</span></em></span>
+        </h1>
+        <p class="hero-sub">
+          Acompanhamento endócrino individualizado para diabetes, tireoide, obesidade,
+          saúde hormonal na gestação, menopausa e população trans — com a atenção de
+          quem também forma outros médicos.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/5575999682044?text=Ol%C3%A1%2C%20Dra.%20Luana%21%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" rel="noopener">Agendar consulta</a>
+          <a class="btn-outline btn" href="#areas">Conhecer áreas</a>
+        </div>
+        <div class="hero-chip">
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span>Nota 5,0 no Google <small>segundo avaliações das pacientes</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAIXA DE CREDENCIAIS ============ -->
+  <section class="strip" aria-label="Credenciais">
+    <div class="container strip-row" data-reveal-group>
+      <span class="strip-item">
+        <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>
+        RQE 16279 &middot; 16280
+      </span>
+      <span class="strip-item">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>
+        Mestre em Saúde Coletiva — UEFS
+      </span>
+      <span class="strip-item">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
+        Professora universitária
+      </span>
+      <span class="strip-item">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+        Preceptora de residência médica
+      </span>
+    </div>
+  </section>
+
+  <!-- ============ ÁREAS (imersiva escura) ============ -->
+  <section class="areas section-pad" id="areas">
+    <div class="blob blob-accent" aria-hidden="true" style="top:-12%; right:-14%; width:34rem; height:34rem; opacity:0.14;"></div>
+    <div class="blob blob-olive" aria-hidden="true" style="bottom:-18%; left:-10%; width:30rem; height:30rem; opacity:0.3;"></div>
+    <div class="container">
+      <div class="section-head-split" data-reveal>
+        <div>
+          <p class="section-eyebrow">Áreas de atuação</p>
+          <h2>Um olhar clínico para cada fase hormonal</h2>
+        </div>
+        <p>Cada consulta parte de investigação clínica cuidadosa — entender o que
+        está por trás do sintoma, não apenas ajustar o exame.</p>
+      </div>
+      <div class="areas-grid" data-reveal-group>
+        <div class="area tilt">
+          <div class="icon-badge badge-accent">
+            <svg viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" /></svg>
+          </div>
+          <h3>Diabetes</h3>
+          <p>Tipo 1, tipo 2 e diabetes gestacional — controle glicêmico ajustado à sua rotina real, não a uma tabela genérica.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-olive">
+            <svg viewBox="0 0 24 24"><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></svg>
+          </div>
+          <h3>Tireoide</h3>
+          <p>Hipotireoidismo, hipertireoidismo e nódulos — avaliação minuciosa antes de qualquer ajuste de dose.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-sage">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18" /><path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /><path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /><path d="M7 21h10" /></svg>
+          </div>
+          <h3>Obesidade</h3>
+          <p>Tratamento que olha metabolismo, não só o ponteiro da balança — com avaliação criteriosa sobre quando a medicação faz sentido no seu caso.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-gold">
+            <svg viewBox="0 0 24 24"><path d="M14.5 2v17.5c0 1.4-1.1 2.5-2.5 2.5c-1.4 0-2.5-1.1-2.5-2.5V2" /><path d="M8.5 2h7" /><path d="M14.5 16h-5" /></svg>
+          </div>
+          <h3>Distúrbios metabólicos</h3>
+          <p>Colesterol, resistência à insulina e outros marcadores que pedem leitura conjunta, não isolada.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-accent">
+            <svg viewBox="0 0 24 24"><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" /><path d="M15 12h.01" /><path d="M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1" /><path d="M9 12h.01" /></svg>
+          </div>
+          <h3>Gestação</h3>
+          <p>Diabetes gestacional e demais ajustes hormonais da gravidez, acompanhados junto ao seu pré-natal.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-olive">
+            <svg viewBox="0 0 24 24"><path d="M18 5h4" /><path d="M20 3v4" /><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg>
+          </div>
+          <h3>Menopausa</h3>
+          <p>Transição hormonal acompanhada com informação clara sobre riscos e benefícios de cada abordagem.</p>
+        </div>
+        <div class="area tilt">
+          <div class="icon-badge badge-sage">
+            <svg viewBox="0 0 24 24"><path d="M12 16v6" /><path d="M14 20h-4" /><path d="M18 2h4v4" /><path d="m2 2 7.17 7.17" /><path d="M2 5.355V2h3.357" /><path d="m22 2-7.17 7.17" /><path d="M8 5 5 8" /><circle cx="12" cy="12" r="4" /></svg>
+          </div>
+          <h3>Saúde hormonal trans</h3>
+          <p>Hormonização acompanhada com escuta e respeito ao seu processo — sem julgamento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOBRE ============ -->
+  <section class="section-pad" id="sobre">
+    <div class="blob blob-sage" aria-hidden="true" style="top:10%; left:-14%; width:26rem; height:26rem;"></div>
+    <div class="container about">
+      <div class="portrait-wrap" data-reveal>
+        <div class="portrait-frame">
+          <img src="img/sobre.jpg" alt="Dra. Luana Figuerêdo sorrindo, vestindo blazer bege" loading="lazy" />
+        </div>
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="num"><span data-counter="15">15</span>+ anos</div>
+            <div class="lbl">de medicina</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">UEFS &middot; UFBA</div>
+            <div class="lbl">Formação e especialização</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-body" data-reveal>
+        <p class="section-eyebrow">Sobre</p>
+        <h2>Formação clínica sólida, escuta próxima</h2>
+        <p>
+          <strong>Dra. Luana Machado Figuerêdo</strong> é formada em Medicina pela
+          Universidade Estadual de Feira de Santana (UEFS). Fez residência em
+          Clínica Médica no Hospital Santa Isabel e especialização em Endocrinologia
+          no Hospital Professor Edgard Santos, da UFBA — um dos serviços de
+          referência na área no estado.
+        </p>
+        <p>
+          É mestre em Saúde Coletiva pela UEFS, professora universitária e
+          preceptora de residência médica: forma outros médicos ao mesmo tempo
+          em que atende, o que mantém a prática clínica dela próxima da
+          evidência científica atual.
+        </p>
+        <ul class="timeline">
+          <li><span class="year">2011</span><span class="what">Graduação em Medicina — UEFS</span></li>
+          <li><span class="year">2013–15</span><span class="what">Residência em Clínica Médica — Hospital Santa Isabel</span></li>
+          <li><span class="year">2016–18</span><span class="what">Especialização em Endocrinologia — Hospital Prof. Edgard Santos (UFBA)</span></li>
+          <li><span class="year">Atual</span><span class="what">Mestre em Saúde Coletiva (UEFS) &middot; Professora universitária &middot; Preceptora de residência médica</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEPOIMENTOS ============ -->
+  <section class="depos section-pad" id="depoimentos">
+    <div class="container">
+      <div class="section-head-split" data-reveal>
+        <div>
+          <p class="section-eyebrow">Depoimentos</p>
+          <h2>O que as pacientes dizem</h2>
+        </div>
+        <p>Avaliações reais, publicadas no Google por quem já é acompanhado pela Dra. Luana.</p>
+      </div>
+    </div>
+    <div class="depo-marquee" data-reveal>
+      <div class="depo-track">
+        <div class="depo-set">
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>Já salvou a minha vida duas vezes. Obrigada por cuidar de mim.</blockquote>
+            <footer><span class="avatar">M</span><span class="who">Melania Macedo <small>Avaliação no Google</small></span></footer>
+          </div>
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>Luana é uma profissional fora da curva. Faz o acompanhamento da minha mãe há alguns anos, e foi com ela que conseguimos melhorar a qualidade de vida dela, que tem várias morbidades resultantes da diabetes. Ela busca a raiz do problema para tratar — é isso que faz o tratamento dar o melhor resultado.</blockquote>
+            <footer><span class="avatar">M</span><span class="who">Marabia Matos <small>Avaliação no Google</small></span></footer>
+          </div>
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>Profissional exemplar e competente, que preza sempre pelas coisas simples que fazem a diferença: olho no olho, escuta ativa, empatia. Em pouco tempo de acompanhamento já senti diferença na minha qualidade de vida. Vale a pena marcar uma consulta — e o preço é acessível!</blockquote>
+            <footer><span class="avatar">P</span><span class="who">Pedro Fagundes Tavares <small>Avaliação no Google</small></span></footer>
+          </div>
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>A nossa experiência com o atendimento foi muito favorável. As informações no município onde fui atendida, Santo Estêvão, também foram as melhores possíveis: compromisso profissional, capacitação, dedicação e um atendimento humanizado.</blockquote>
+            <footer><span class="avatar">G</span><span class="who">Graça Mascarenhas <small>Avaliação no Google</small></span></footer>
+          </div>
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>Dra. Luana é uma profissional de excelência: muito atenciosa, criteriosa, empática, disponível, alto astral, sabe ouvir e é muito competente. Super recomendo.</blockquote>
+            <footer><span class="avatar">K</span><span class="who">Kelia Cavallaro <small>Avaliação no Google</small></span></footer>
+          </div>
+          <div class="depo">
+            <p class="stars" aria-hidden="true">★★★★★</p>
+            <blockquote>Já tinha procurado várias endocrinologistas, mas nenhuma teve esse resultado. Dra. Luana é uma médica excelente e um ser humano incrível.</blockquote>
+            <footer><span class="avatar">J</span><span class="who">Joseane Barreto <small>Avaliação no Google</small></span></footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMUNIDADE ============ -->
+  <section class="section-pad">
+    <div class="container">
+      <div class="community" data-reveal>
+        <div class="blob blob-accent" aria-hidden="true" style="top:-40%; right:-8%; width:26rem; height:26rem; opacity:0.35;"></div>
+        <div class="community-head">
+          <div class="icon-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /><circle cx="12" cy="13" r="3" /></svg>
+          </div>
+          <div>
+            <p class="section-eyebrow">Comunidade</p>
+            <h2>Conteúdo educativo toda semana</h2>
+            <p>No Instagram, a Dra. Luana explica exames, tratamentos e dúvidas reais de quem convive com questão hormonal — sem promessa vazia.</p>
+          </div>
+        </div>
+        <div>
+          <p class="stat" data-counter="4679" data-counter-format="pt">4.679</p>
+          <p class="stat-label">Seguidores</p>
+        </div>
+        <a class="btn community-cta" href="https://www.instagram.com/draluanafigueredo.endo/" target="_blank" rel="noopener">Seguir no Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ONDE ATENDER ============ -->
+  <section class="section-pad" id="local">
+    <div class="blob blob-olive" aria-hidden="true" style="top:-6%; right:-16%; width:28rem; height:28rem; opacity:0.18;"></div>
+    <div class="container">
+      <div class="section-head-split" data-reveal>
+        <div>
+          <p class="section-eyebrow">Onde atender</p>
+          <h2>Consultório em Feira de Santana</h2>
+        </div>
+        <p>Atendimento presencial, no Centro da cidade.</p>
+      </div>
+      <div class="local-grid" data-reveal>
+        <div class="local-info">
+          <div class="local-address">
+            <svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+            <div class="lines">
+              <strong>Av. Getúlio Vargas, 3522</strong>
+              <span>Centro, Feira de Santana — BA</span>
+              <span>CEP 44076-828</span>
+            </div>
+          </div>
+          <p class="local-note">Consultas com horário agendado — confirme disponibilidade pelo WhatsApp.</p>
+          <a class="btn btn-outline" href="https://www.google.com/maps/dir/?api=1&destination=Av.+Get%C3%BAlio+Vargas%2C+3522+-+Centro%2C+Feira+de+Santana+-+BA%2C+44076-828" target="_blank" rel="noopener">Traçar rota</a>
+        </div>
+        <div class="map-frame">
+          <iframe
+            src="https://www.google.com/maps?q=Av.+Get%C3%BAlio+Vargas%2C+3522+-+Centro%2C+Feira+de+Santana+-+BA%2C+44076-828&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Mapa: consultório da Dra. Luana Figuerêdo, Av. Getúlio Vargas 3522, Centro, Feira de Santana - BA"
+          ></iframe>
+          <span class="map-chip">Feira de Santana, BA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTATO ============ -->
+  <section class="section-pad" id="contato" style="padding-top: 1rem;">
+    <div class="blob blob-sage" aria-hidden="true" style="top:0; left:50%; width:32rem; height:32rem; transform:translateX(-50%);"></div>
+    <div class="container">
+      <div class="contato-panel glass" data-reveal>
+        <div>
+          <p class="section-eyebrow">Contato</p>
+          <h2>Vamos entender o que seus exames não estão te dizendo</h2>
+          <p class="lead">Agende pelo WhatsApp e leve suas últimas dosagens.</p>
+          <div class="contato-actions">
+            <a class="btn btn-primary" href="https://wa.me/5575999682044?text=Ol%C3%A1%2C%20Dra.%20Luana%21%20Gostaria%20de%20agendar%20uma%20consulta." target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+          </div>
+        </div>
+        <div class="contato-info">
+          <a class="item" href="#local">
+            <svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+            <span>Feira de Santana — BA<br /><small>Ver endereço e mapa</small></span>
+          </a>
+          <span class="item">
+            <svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+            <a href="mailto:luanafigueredo.endo@gmail.com">luanafigueredo.endo@gmail.com</a>
+          </span>
+          <span class="item">
+            <svg viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" /></svg>
+            <a href="https://www.instagram.com/draluanafigueredo.endo/" target="_blank" rel="noopener">@draluanafigueredo.endo</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img class="mono" src="img/logo/logo-monograma.png" alt="Dra. Luana Figuerêdo" />
+        <p>Endocrinologia com investigação cuidadosa e atenção próxima, em Feira de Santana.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#areas">Áreas de atuação</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+          <li><a href="#local">Onde atender</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://wa.me/5575999682044" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="mailto:luanafigueredo.endo@gmail.com">luanafigueredo.endo@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/draluanafigueredo.endo/" target="_blank" rel="noopener">@draluanafigueredo.endo</a></li>
+          <li><a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Get%C3%BAlio+Vargas%2C+3522+-+Centro%2C+Feira+de+Santana+-+BA%2C+44076-828" target="_blank" rel="noopener">Av. Getúlio Vargas, 3522 — Centro</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dra. Luana Machado Figuerêdo &middot; RQE 16279/16280</span>
+      <span>Feira de Santana, BA</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /#smooth-content -->
+</div><!-- /#smooth-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Aprimoramento progressivo: nada no CSS esconde conteúdo atrás de JS.
+  // Se o GSAP não carregar (offline, CDN bloqueado), a página lê normal.
+  if (typeof gsap === 'undefined' || reduce) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+  if (typeof ScrollSmoother !== 'undefined') gsap.registerPlugin(ScrollSmoother);
+  if (typeof DrawSVGPlugin !== 'undefined') gsap.registerPlugin(DrawSVGPlugin);
+  if (typeof SplitText !== 'undefined') gsap.registerPlugin(SplitText);
+
+  // ---- scroll suave com inércia ----
+  var smoother = null;
+  if (typeof ScrollSmoother !== 'undefined' &&
+      document.querySelector('#smooth-wrapper') && document.querySelector('#smooth-content')) {
+    smoother = ScrollSmoother.create({ smooth: 1.1, effects: false });
+  }
+
+  // âncoras: com o conteúdo dentro de um wrapper fixed, o scroll nativo de
+  // âncora não funciona — rola via smoother (com folga pro header fixo)
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (ev) {
+      var id = a.getAttribute('href');
+      if (!id || id.length < 2) return;
+      var el = document.querySelector(id);
+      if (!el) return;
+      ev.preventDefault();
+      if (smoother) smoother.scrollTo(el, true, 'top 96px');
+      else el.scrollIntoView({ behavior: 'smooth' });
+      if (history.pushState) history.pushState(null, '', id);
+    });
+  });
+
+  // ---- entrada do hero (pausada: quem dá o play é o véu de abertura) ----
+  var intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  intro
+    .from('.hero .eyebrow', { y: 16, opacity: 0, duration: 0.7 });
+
+  // headline: com SplitText, reveal por linha mascarada (o texto "sobe" de
+  // dentro de um recorte); sem o plugin, cai no stagger por palavra
+  var h1Target = document.querySelector('.hero h1 > span');
+  if (typeof SplitText !== 'undefined' && h1Target) {
+    var split = new SplitText(h1Target, { type: 'lines', mask: 'lines', linesClass: 'h1-line' });
+    intro.from(split.lines, {
+      yPercent: 115, duration: 0.95, stagger: 0.12, ease: 'power3.out',
+      onComplete: function () { split.revert(); }
+    }, '-=0.4');
+  } else {
+    intro.from('.hero h1 .w', {
+      yPercent: 45, opacity: 0, filter: 'blur(6px)',
+      stagger: 0.05, duration: 0.85
+    }, '-=0.4');
+  }
+
+  intro
+    .from('.hero-sub', { y: 18, opacity: 0, duration: 0.7 }, '-=0.5')
+    // yPercent (não y) porque o efeito magnético desses mesmos botões usa
+    // `y` — são componentes separados no transform, então não colidem
+    .from('.hero-actions > *', { yPercent: 30, opacity: 0, stagger: 0.1, duration: 0.6 }, '-=0.45')
+    .from('.hero-bg img', { scale: 1.08, opacity: 0, duration: 1.6, ease: 'power2.out' }, 0)
+    .from('.hero-chip', { y: 18, opacity: 0, scale: 0.92, ease: 'back.out(1.7)', duration: 0.6 }, '-=0.6');
+
+  // ---- véu de abertura: monograma LF se desenhando como assinatura ----
+  var veil = document.querySelector('.intro-veil');
+  var lfPath = document.querySelector('#lf-path');
+
+  if (veil && lfPath && typeof DrawSVGPlugin !== 'undefined') {
+    veil.classList.add('on');
+    gsap.timeline()
+      .from(lfPath, { drawSVG: '0%', duration: 1.5, ease: 'power1.inOut' })
+      .to(lfPath, { fillOpacity: 1, duration: 0.5 }, '-=0.35')
+      .to(lfPath, { strokeOpacity: 0, duration: 0.4 }, '<')
+      .to(veil, {
+        yPercent: -100, duration: 0.7, ease: 'power3.inOut', delay: 0.15,
+        onComplete: function () { veil.remove(); }
+      })
+      .add(function () { intro.play(); }, '-=0.45');
+  } else {
+    if (veil) veil.remove();
+    intro.play();
+  }
+
+  // Sem parallax no scroll aqui de propósito: essa imagem já tem o zoom de
+  // entrada (scale 1.08 -> 1) e um segundo tween mexendo em `scale` brigava
+  // pela mesma propriedade, dando um salto de zoom no primeiro scroll.
+  // Se um dia voltar, animar o wrapper .hero-bg (não a <img>) e só yPercent.
+
+  // ---- reveals de scroll ----
+  gsap.utils.toArray('[data-reveal]').forEach(function (el) {
+    gsap.from(el, {
+      y: 30, opacity: 0, duration: 0.85, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' }
+    });
+  });
+  gsap.utils.toArray('[data-reveal-group]').forEach(function (group) {
+    gsap.from(group.children, {
+      y: 26, opacity: 0, duration: 0.7, stagger: 0.09, ease: 'power2.out',
+      scrollTrigger: { trigger: group, start: 'top 86%' }
+    });
+  });
+
+  // ---- contadores ----
+  gsap.utils.toArray('[data-counter]').forEach(function (el) {
+    var target = parseInt(el.getAttribute('data-counter'), 10);
+    var usePt = el.getAttribute('data-counter-format') === 'pt';
+    var obj = { val: 0 };
+    el.textContent = '0';
+    ScrollTrigger.create({
+      trigger: el, start: 'top 90%', once: true,
+      onEnter: function () {
+        gsap.to(obj, {
+          val: target, duration: 1.6, ease: 'power1.out',
+          onUpdate: function () {
+            var v = Math.round(obj.val);
+            el.textContent = usePt ? v.toLocaleString('pt-BR') : String(v);
+          }
+        });
+      }
+    });
+  });
+
+  // ---- marquee de depoimentos ----
+  var marquee = document.querySelector('.depo-marquee');
+  var track = document.querySelector('.depo-track');
+  if (marquee && track) {
+    marquee.classList.add('marquee-active');
+    var set = track.querySelector('.depo-set');
+    // duplica o conjunto pra loop contínuo
+    var clone = set.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+
+    var tween = null;
+    var mqTrigger = null;
+    function buildMarquee() {
+      if (tween) tween.kill();
+      gsap.set(track, { x: 0 });
+      var gap = parseFloat(getComputedStyle(track).gap) || 0;
+      var shift = set.offsetWidth + gap;
+      tween = gsap.to(track, {
+        x: -shift, ease: 'none', repeat: -1,
+        duration: shift / 55
+      });
+      // onToggle só dispara na mudança de estado, então o estado inicial
+      // (e o de cada rebuild) precisa ser aplicado na mão
+      if (mqTrigger && !mqTrigger.isActive) tween.pause();
+    }
+
+    // só anima enquanto a seção está visível — rodando fora da tela ele
+    // disputava frames com o scroll sem ninguém ver
+    mqTrigger = ScrollTrigger.create({
+      trigger: marquee, start: 'top bottom', end: 'bottom top',
+      onToggle: function (self) {
+        if (!tween) return;
+        if (self.isActive) tween.play(); else tween.pause();
+      }
+    });
+    buildMarquee();
+
+    marquee.addEventListener('mouseenter', function () { if (tween) gsap.to(tween, { timeScale: 0.12, duration: 0.4 }); });
+    marquee.addEventListener('mouseleave', function () { if (tween) gsap.to(tween, { timeScale: 1, duration: 0.4 }); });
+    var resizeT;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeT);
+      resizeT = setTimeout(buildMarquee, 250);
+    });
+  }
+
+  // ---- spotlight dourado nos cards escuros ----
+  gsap.utils.toArray('.area').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // ---- tilt de vidro nos cards ----
+  gsap.utils.toArray('.tilt').forEach(function (card) {
+    card.style.transformPerspective = 700;
+    var qx = gsap.quickTo(card, 'rotateY', { duration: 0.4, ease: 'power2.out' });
+    var qy = gsap.quickTo(card, 'rotateX', { duration: 0.4, ease: 'power2.out' });
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      qx(((e.clientX - r.left) / r.width - 0.5) * 8);
+      qy(((e.clientY - r.top) / r.height - 0.5) * -8);
+    });
+    card.addEventListener('mouseleave', function () { qx(0); qy(0); });
+  });
+
+  // ---- pop dos badges de ícone ----
+  gsap.utils.toArray('.icon-badge').forEach(function (badge) {
+    badge.addEventListener('mouseenter', function () {
+      gsap.to(badge, { y: -4, rotate: -6, scale: 1.08, duration: 0.35, ease: 'back.out(2)' });
+    });
+    badge.addEventListener('mouseleave', function () {
+      gsap.to(badge, { y: 0, rotate: 0, scale: 1, duration: 0.35, ease: 'power2.out' });
+    });
+  });
+
+  // ---- botões magnéticos ----
+  gsap.utils.toArray('.btn').forEach(function (btn) {
+    var qx = gsap.quickTo(btn, 'x', { duration: 0.3, ease: 'power3.out' });
+    var qy = gsap.quickTo(btn, 'y', { duration: 0.3, ease: 'power3.out' });
+    btn.addEventListener('mousemove', function (e) {
+      var r = btn.getBoundingClientRect();
+      qx((e.clientX - r.left - r.width / 2) * 0.22);
+      qy((e.clientY - r.top - r.height / 2) * 0.3);
+    });
+    btn.addEventListener('mouseleave', function () { qx(0); qy(0); });
+  });
+
+  // Os blobs ficam estáticos de propósito: animá-los custava um re-blur de
+  // 8 camadas grandes por frame (a animação mais cara e a menos perceptível
+  // da página) e era a principal fonte de travamento no scroll.
+
+  // ---- estado compacto do header + scrollspy ----
+  ScrollTrigger.create({
+    start: 'top -60', end: 99999,
+    toggleClass: { className: 'is-scrolled', targets: 'header.site' }
+  });
+  ['areas', 'sobre', 'depoimentos', 'local', 'contato'].forEach(function (id) {
+    var link = document.querySelector('nav.links a[data-spy="' + id + '"]');
+    if (!link) return;
+    ScrollTrigger.create({
+      trigger: '#' + id, start: 'top center', end: 'bottom center',
+      onToggle: function (self) { link.classList.toggle('active', self.isActive); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

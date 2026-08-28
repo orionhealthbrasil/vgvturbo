@@ -1,0 +1,4 @@
+ALTER TABLE public.blog_posts
+  ADD COLUMN IF NOT EXISTS cover_prompt TEXT,
+  ADD COLUMN IF NOT EXISTS cta_text TEXT,
+  ADD COLUMN IF NOT EXISTS cta_url TEXT;

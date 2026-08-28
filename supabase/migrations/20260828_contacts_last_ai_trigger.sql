@@ -1,0 +1,2 @@
+ALTER TABLE public.contacts
+  ADD COLUMN IF NOT EXISTS last_ai_trigger_at timestamptz;
