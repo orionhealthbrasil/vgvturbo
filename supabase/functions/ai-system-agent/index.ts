@@ -1114,14 +1114,18 @@ REGRAS OBRIGATÓRIAS:
 
     for (let i = 0; i < 10; i++) {
       iterations = i + 1;
+      const systemAgentModel = agent.model || "gpt-4o-mini";
       const openaiBody: any = {
-        model: agent.model || "gpt-4o-mini",
+        model: systemAgentModel,
         messages: openaiMessages,
         max_tokens: 8192,
         temperature: 0.7,
         tools: OPENAI_TOOLS,
         tool_choice: "auto",
       };
+      // GPT-5.6 (sol/terra/luna) defaults reasoning_effort to "medium" when omitted, which
+      // is incompatible with function tools on Chat Completions — must be explicitly "none".
+      if (systemAgentModel.startsWith("gpt-5.6")) openaiBody.reasoning_effort = "none";
 
       const openaiStart = Date.now();
       const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
