@@ -111,13 +111,17 @@ export function useNotificationSound() {
       const next = !prev;
       // Persist locally (instant feedback)
       localStorage.setItem(SOUND_ENABLED_KEY, String(next));
-      // Persist to DB (fire-and-forget)
+      // Persist to DB (fire-and-forget — must chain .then()/await or the
+      // Supabase query builder never actually sends the request)
       supabase.auth.getUser().then(({ data: { user } }) => {
         if (!user) return;
-        supabase
+        return supabase
           .from('profiles')
           .update({ notification_sound_enabled: next })
-          .eq('user_id', user.id);
+          .eq('user_id', user.id)
+          .then(({ error }) => {
+            if (error) console.error('Failed to persist sound preference:', error);
+          });
       });
       return next;
     });
