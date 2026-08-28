@@ -115,6 +115,7 @@ interface PanelContentProps {
   onCategoryChange: (id: string | null) => void;
   showUnavailable: boolean;
   onToggleUnavailable: () => void;
+  onClose?: () => void;
 }
 
 function PanelContent({
@@ -129,6 +130,7 @@ function PanelContent({
   onCategoryChange,
   showUnavailable,
   onToggleUnavailable,
+  onClose,
 }: PanelContentProps) {
   const { data: categories = [] } = useProductCategories();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -165,6 +167,19 @@ function PanelContent({
           <Badge variant="secondary" className="ml-auto text-xs">
             {selectedIds.size} selecionado{selectedIds.size !== 1 ? 's' : ''}
           </Badge>
+        )}
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className={cn(
+              'ml-auto shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+              selectionActive && 'ml-2'
+            )}
+            aria-label="Fechar catálogo"
+          >
+            <X className="h-4 w-4" />
+          </button>
         )}
       </div>
 
@@ -342,7 +357,7 @@ export function CatalogSidePanel({ open, onOpenChange, products, isLoading, onSe
 
   return (
     <aside className="hidden h-full w-[360px] shrink-0 animate-in slide-in-from-right flex-col overflow-hidden border-l bg-card duration-200 md:flex">
-      <PanelContent {...sharedProps} />
+      <PanelContent {...sharedProps} onClose={() => onOpenChange(false)} />
     </aside>
   );
 }
