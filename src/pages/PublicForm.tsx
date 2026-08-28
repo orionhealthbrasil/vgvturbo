@@ -48,7 +48,7 @@ export default function PublicForm() {
     if (!slug) return;
     setSubmitting(true);
     try {
-      const url = `https://welindpmuqdnuazgaetz.supabase.co/functions/v1/submit-public-form`;
+      const url = `https://atnjikvdbvyvyabsxctj.supabase.co/functions/v1/submit-public-form`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

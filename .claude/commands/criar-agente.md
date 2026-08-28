@@ -131,9 +131,9 @@ function Invoke-SupabaseSql($sql) {
   $escaped = [System.Web.HttpUtility]::JavaScriptStringEncode($sql)
   $bodyStr = '{"query": "' + $escaped + '"}'
   $client = New-Object System.Net.Http.HttpClient
-  $client.DefaultRequestHeaders.Authorization = New-Object System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "sbp_aa7ca5b92dfdc6928edd860e4d5febd96e04c884")
+  $client.DefaultRequestHeaders.Authorization = New-Object System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "<MANAGEMENT_API_TOKEN>")
   $content = New-Object System.Net.Http.StringContent($bodyStr, [System.Text.Encoding]::UTF8, "application/json")
-  $response = $client.PostAsync("https://api.supabase.com/v1/projects/welindpmuqdnuazgaetz/database/query", $content).GetAwaiter().GetResult()
+  $response = $client.PostAsync("https://api.supabase.com/v1/projects/<PROJECT_REF>/database/query", $content).GetAwaiter().GetResult()
   $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
 }
 ```

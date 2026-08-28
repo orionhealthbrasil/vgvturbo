@@ -137,7 +137,7 @@ export function ApiKeysSettingsCard({ organizationId }: ApiKeysSettingsCardProps
     setTimeout(() => setCopiedKey(false), 2000);
   };
 
-  const mcpUrl = 'https://welindpmuqdnuazgaetz.supabase.co/functions/v1/mcp-server';
+  const mcpUrl = 'https://atnjikvdbvyvyabsxctj.supabase.co/functions/v1/mcp-server';
 
   return (
     <>

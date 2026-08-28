@@ -19,7 +19,7 @@ import {
   useDeletePaymentIntegration, usePaymentIntegrationEvents, PaymentPlatform, PaymentIntegration,
 } from '@/hooks/usePaymentIntegrations';
 
-const WEBHOOK_BASE_URL = 'https://welindpmuqdnuazgaetz.supabase.co/functions/v1/payment-webhook';
+const WEBHOOK_BASE_URL = 'https://atnjikvdbvyvyabsxctj.supabase.co/functions/v1/payment-webhook';
 
 async function hmacSha256Hex(secret: string, payload: string): Promise<string> {
   const key = await window.crypto.subtle.importKey(

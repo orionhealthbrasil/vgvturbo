@@ -2,7 +2,7 @@
 // Sends an email notification to the agency whenever:
 //  - A new support ticket is opened (event: 'new_ticket')
 //  - A new message is posted to a ticket by a non-agency sender (event: 'new_message')
-// Deployed to external Supabase (welindpmuqdnuazgaetz) — manual deploy required.
+// Deployed to external Supabase (atnjikvdbvyvyabsxctj) — manual deploy required.
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

@@ -4,7 +4,7 @@
 // - Persiste mensagens recebidas (messages) e enviadas pelo celular (message_echoes).
 // - Atualiza delivery status (statuses).
 //
-// Deploy manual no Supabase externo (welindpmuqdnuazgaetz).
+// Deploy manual no Supabase externo (atnjikvdbvyvyabsxctj).
 // Usa as secrets default do próprio projeto (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY).
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";

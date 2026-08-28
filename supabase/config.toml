@@ -1,4 +1,4 @@
-project_id = "welindpmuqdnuazgaetz"
+project_id = "atnjikvdbvyvyabsxctj"
 
 [functions.create-review]
 verify_jwt = false

@@ -15,7 +15,7 @@ import { PermissionGuard } from '@/components/auth/PermissionGuard';
 import { useCanAccess } from '@/hooks/usePermissions';
 
 const WEBHOOK_URL =
-  'https://welindpmuqdnuazgaetz.supabase.co/functions/v1/whatsapp-meta-webhook';
+  'https://atnjikvdbvyvyabsxctj.supabase.co/functions/v1/whatsapp-meta-webhook';
 
 interface MetaInstance {
   id: string;
