@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { AiAgent, useCreateAiAgent, useUpdateAiAgent, AVAILABLE_AGENT_TOOLS } from '@/hooks/useAiAgents';
 import { useAutomations } from '@/hooks/useAutomations';
@@ -226,11 +226,21 @@ export function AgentFormDialog({ open, onOpenChange, agent }: AgentFormDialogPr
               <Select value={model} onValueChange={setModel}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="gpt-4o">GPT-4o</SelectItem>
-                  <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
-                  <SelectItem value="gpt-4.1">GPT-4.1</SelectItem>
-                  <SelectItem value="gpt-4.1-mini">GPT-4.1 Mini</SelectItem>
-                  <SelectItem value="gpt-4.1-nano">GPT-4.1 Nano</SelectItem>
+                  <SelectGroup>
+                    <SelectLabel>GPT-5.6 (mais recente)</SelectLabel>
+                    <SelectItem value="gpt-5.6-sol">GPT-5.6 Sol — máx. capacidade</SelectItem>
+                    <SelectItem value="gpt-5.6-terra">GPT-5.6 Terra — balanceado</SelectItem>
+                    <SelectItem value="gpt-5.6-luna">GPT-5.6 Luna — econômico</SelectItem>
+                  </SelectGroup>
+                  <SelectGroup>
+                    <SelectLabel>GPT-4.x</SelectLabel>
+                    <SelectItem value="gpt-4.5">GPT-4.5</SelectItem>
+                    <SelectItem value="gpt-4.1">GPT-4.1</SelectItem>
+                    <SelectItem value="gpt-4.1-mini">GPT-4.1 Mini</SelectItem>
+                    <SelectItem value="gpt-4.1-nano">GPT-4.1 Nano</SelectItem>
+                    <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+                    <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
