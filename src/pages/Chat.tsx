@@ -39,7 +39,7 @@ export default function Chat({ channelFilter = 'whatsapp' }: ChatProps = {}) {
   const archiveContact = useArchiveContact();
   const { data: allArchivedContacts = [], isLoading: isLoadingArchived } = useArchivedContacts();
   const { data: allScheduledContacts = [] } = useScheduledContacts();
-  const { playNotificationSound, isSoundEnabled, toggleSound } = useNotificationSound();
+  const { playNotificationSound } = useNotificationSound();
   const { showNotification } = useBrowserNotifications();
 
   // Filter by channel: 'instagram' shows only IG; 'whatsapp' shows everything else (whatsapp/null)
@@ -619,8 +619,6 @@ export default function Chat({ channelFilter = 'whatsapp' }: ChatProps = {}) {
           onSelectContact={handleSelectContact}
           onNewConversation={() => setIsSearchOpen(true)}
           isLoading={isLoading}
-          isSoundEnabled={isSoundEnabled}
-          onToggleSound={toggleSound}
           archivedContacts={archivedContacts}
           isLoadingArchived={isLoadingArchived}
           onArchiveContact={handleArchiveContact}

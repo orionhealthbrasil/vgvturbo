@@ -11,6 +11,7 @@ interface BroadcastCampaign {
   message_content: string;
   media_url: string | null;
   media_type: string | null;
+  automation_id: string | null;
   min_interval_seconds: number;
   max_interval_seconds: number;
   batch_size: number;
@@ -112,6 +113,67 @@ async function sendWhatsAppMessage(
   }
 }
 
+async function triggerAutomationForRecipient(
+  supabase: SupabaseClient,
+  campaign: BroadcastCampaign,
+  recipient: BroadcastRecipient,
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    // Resolve contact_id — create a transient contact if not linked
+    let contactId = recipient.contact_id;
+    if (!contactId) {
+      const phone = formatPhoneNumber(recipient.phone);
+      const { data: existing } = await supabase
+        .from('contacts')
+        .select('id')
+        .eq('organization_id', campaign.organization_id)
+        .eq('phone', phone)
+        .maybeSingle();
+
+      if (existing) {
+        contactId = existing.id;
+      } else {
+        const { data: created, error: createErr } = await supabase
+          .from('contacts')
+          .insert({
+            organization_id: campaign.organization_id,
+            phone,
+            name: recipient.name || null,
+          })
+          .select('id')
+          .single();
+        if (createErr) return { success: false, error: createErr.message };
+        contactId = created.id;
+      }
+    }
+
+    const res = await fetch(`${supabaseUrl}/functions/v1/automation-engine`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${serviceKey}`,
+      },
+      body: JSON.stringify({
+        contact_id: contactId,
+        organization_id: campaign.organization_id,
+        event_type: 'manual_trigger',
+        automation_id: campaign.automation_id,
+      }),
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      return { success: false, error: `automation-engine ${res.status}: ${txt}` };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 async function processNextRecipient(
   supabase: SupabaseClient,
   campaign: BroadcastCampaign,
@@ -143,17 +205,16 @@ async function processNextRecipient(
 
   const typedRecipient = recipient as BroadcastRecipient;
 
-  // Personalize message
-  const personalizedMessage = personalizeMessage(campaign.message_content, typedRecipient.name);
-
-  // Send the message
-  console.log(`[process-broadcast] Sending to ${typedRecipient.phone}`);
-  const result = await sendWhatsAppMessage(
-    instance,
-    typedRecipient.phone,
-    personalizedMessage,
-    campaign.media_url
-  );
+  // Route: automation mode vs. direct message
+  let result: { success: boolean; error?: string };
+  if (campaign.automation_id) {
+    console.log(`[process-broadcast] Triggering automation ${campaign.automation_id} for ${typedRecipient.phone}`);
+    result = await triggerAutomationForRecipient(supabase, campaign, typedRecipient);
+  } else {
+    const personalizedMessage = personalizeMessage(campaign.message_content, typedRecipient.name);
+    console.log(`[process-broadcast] Sending to ${typedRecipient.phone}`);
+    result = await sendWhatsAppMessage(instance, typedRecipient.phone, personalizedMessage, campaign.media_url);
+  }
 
   if (result.success) {
     // Update recipient as sent
@@ -165,23 +226,26 @@ async function processNextRecipient(
       } as any)
       .eq('id', typedRecipient.id);
 
-    // If linked to a contact, save the message
-    if (typedRecipient.contact_id) {
-      await supabase.from('messages').insert({
-        contact_id: typedRecipient.contact_id,
-        organization_id: campaign.organization_id,
-        content: personalizedMessage,
-        direction: 'outbound',
-        message_type: campaign.media_url ? 'image' : 'text',
-        media_url: campaign.media_url,
-        status: 'sent',
-      } as any);
+    // In direct message mode, save the message to conversation history
+    if (!campaign.automation_id) {
+      const personalizedMessage = personalizeMessage(campaign.message_content, typedRecipient.name);
+      const contactIdForMsg = typedRecipient.contact_id;
+      if (contactIdForMsg) {
+        await supabase.from('messages').insert({
+          contact_id: contactIdForMsg,
+          organization_id: campaign.organization_id,
+          content: personalizedMessage,
+          direction: 'outbound',
+          message_type: campaign.media_url ? 'image' : 'text',
+          media_url: campaign.media_url,
+          status: 'sent',
+        } as any);
 
-      // Update last_message_at
-      await supabase
-        .from('contacts')
-        .update({ last_message_at: new Date().toISOString() } as any)
-        .eq('id', typedRecipient.contact_id);
+        await supabase
+          .from('contacts')
+          .update({ last_message_at: new Date().toISOString() } as any)
+          .eq('id', contactIdForMsg);
+      }
     }
 
     // Update campaign sent count
@@ -277,6 +341,48 @@ Deno.serve(async (req) => {
         } as any)
         .eq('id', campaignId);
 
+      // Interruptible sleep: polls campaign status every 5s so pause/cancel takes effect quickly
+      const interruptibleSleep = async (totalMs: number): Promise<boolean> => {
+        const step = 5_000;
+        const deadline = Date.now() + totalMs;
+        while (Date.now() < deadline) {
+          await new Promise(resolve => setTimeout(resolve, Math.min(step, deadline - Date.now())));
+          const { data: check } = await supabase
+            .from('broadcast_campaigns')
+            .select('status')
+            .eq('id', campaignId)
+            .single();
+          if (!check || check.status !== 'running') return false; // interrupted
+        }
+        return true; // completed normally
+      };
+
+      // Returns ms to wait until the hourly slot refills, or 0 if under the limit
+      const msUntilHourlySlotFree = async (limit: number): Promise<number> => {
+        if (!limit || limit <= 0) return 0;
+        const since = new Date(Date.now() - 3_600_000).toISOString();
+        const { count } = await supabase
+          .from('broadcast_recipients')
+          .select('id', { count: 'exact', head: true })
+          .eq('campaign_id', campaignId)
+          .eq('status', 'sent')
+          .gte('sent_at', since);
+        if ((count ?? 0) < limit) return 0;
+        // Find oldest sent_at in the window to know when the slot refills
+        const { data: oldest } = await supabase
+          .from('broadcast_recipients')
+          .select('sent_at')
+          .eq('campaign_id', campaignId)
+          .eq('status', 'sent')
+          .gte('sent_at', since)
+          .order('sent_at', { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (!oldest?.sent_at) return 60_000;
+        const refillAt = new Date(oldest.sent_at).getTime() + 3_600_000;
+        return Math.max(0, refillAt - Date.now());
+      };
+
       // Process messages in background using EdgeRuntime.waitUntil
       const processingPromise = (async () => {
         let continueProcessing = true;
@@ -297,15 +403,28 @@ Deno.serve(async (req) => {
 
           const typedCampaign = currentCampaign as BroadcastCampaign;
 
+          // Enforce messages_per_hour_limit
+          const waitMs = await msUntilHourlySlotFree(typedCampaign.messages_per_hour_limit);
+          if (waitMs > 0) {
+            console.log(`[process-broadcast] Hourly limit reached, waiting ${Math.ceil(waitMs / 1000)}s`);
+            await supabase
+              .from('broadcast_campaigns')
+              .update({ paused_until: new Date(Date.now() + waitMs).toISOString() } as any)
+              .eq('id', campaignId);
+            const resumed = await interruptibleSleep(waitMs);
+            if (!resumed) break;
+            continue;
+          }
+
           // Check if we need a batch pause
           if (messagesInCurrentBatch >= typedCampaign.batch_size) {
             const pauseDuration = getRandomDelay(
               typedCampaign.batch_pause_min_seconds,
               typedCampaign.batch_pause_max_seconds
             );
-            
+
             console.log(`[process-broadcast] Batch pause: ${pauseDuration}s`);
-            
+
             await supabase
               .from('broadcast_campaigns')
               .update({
@@ -314,7 +433,8 @@ Deno.serve(async (req) => {
               } as any)
               .eq('id', campaignId);
 
-            await new Promise(resolve => setTimeout(resolve, pauseDuration * 1000));
+            const resumed = await interruptibleSleep(pauseDuration * 1000);
+            if (!resumed) break;
             messagesInCurrentBatch = 0;
           }
 
@@ -340,7 +460,7 @@ Deno.serve(async (req) => {
             );
 
             console.log(`[process-broadcast] Waiting ${delay}s before next message`);
-            
+
             await supabase
               .from('broadcast_campaigns')
               .update({
@@ -348,15 +468,20 @@ Deno.serve(async (req) => {
               } as any)
               .eq('id', campaignId);
 
-            await new Promise(resolve => setTimeout(resolve, delay * 1000));
+            const resumed = await interruptibleSleep(delay * 1000);
+            if (!resumed) break;
           }
         }
 
         console.log(`[process-broadcast] Finished processing campaign ${campaignId}`);
       })();
 
-      // Use EdgeRuntime.waitUntil for background processing
-      (globalThis as any).EdgeRuntime?.waitUntil?.(processingPromise);
+      // Use EdgeRuntime.waitUntil — required in production; fall back to awaiting if unavailable
+      if ((globalThis as any).EdgeRuntime?.waitUntil) {
+        (globalThis as any).EdgeRuntime.waitUntil(processingPromise);
+      } else {
+        await processingPromise;
+      }
 
       return new Response(
         JSON.stringify({ success: true, message: 'Broadcast started' }),

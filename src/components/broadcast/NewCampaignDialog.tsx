@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { ImagePlus, X } from 'lucide-react';
+import { ImagePlus, X, MessageSquare, Zap } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -24,20 +24,32 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useCreateBroadcastCampaign, BroadcastCampaign } from '@/hooks/useBroadcast';
+import { useAutomations } from '@/hooks/useAutomations';
 import { toast } from 'sonner';
 
-const formSchema = z.object({
+type ContentMode = 'message' | 'automation';
+
+const baseSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
-  message_content: z.string().min(1, 'Mensagem é obrigatória'),
   min_interval_minutes: z.number().min(5).max(15),
   max_interval_minutes: z.number().min(5).max(15),
   batch_size: z.number().min(10).max(30),
+  message_content: z.string().optional(),
+  automation_id: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof baseSchema>;
 
 interface NewCampaignDialogProps {
   open: boolean;
@@ -47,15 +59,18 @@ interface NewCampaignDialogProps {
 
 export function NewCampaignDialog({ open, onOpenChange, onSuccess }: NewCampaignDialogProps) {
   const createCampaign = useCreateBroadcastCampaign();
+  const { data: automations = [] } = useAutomations();
+  const [contentMode, setContentMode] = useState<ContentMode>('message');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(baseSchema),
     defaultValues: {
       name: '',
       message_content: '',
+      automation_id: undefined,
       min_interval_minutes: 5,
       max_interval_minutes: 15,
       batch_size: 20,
@@ -84,13 +99,22 @@ export function NewCampaignDialog({ open, onOpenChange, onSuccess }: NewCampaign
 
   const onSubmit = async (values: FormValues) => {
     try {
+      if (contentMode === 'message' && !values.message_content?.trim()) {
+        form.setError('message_content', { message: 'Mensagem é obrigatória' });
+        return;
+      }
+      if (contentMode === 'automation' && !values.automation_id) {
+        form.setError('automation_id', { message: 'Selecione uma automação' });
+        return;
+      }
+
       let mediaUrl: string | null = null;
 
-      if (imageFile) {
+      if (contentMode === 'message' && imageFile) {
         setIsUploading(true);
         const ext = imageFile.name.split('.').pop();
         const fileName = `broadcast/${Date.now()}.${ext}`;
-        
+
         const { error: uploadError } = await supabase.storage
           .from('chat-media')
           .upload(fileName, imageFile);
@@ -107,9 +131,10 @@ export function NewCampaignDialog({ open, onOpenChange, onSuccess }: NewCampaign
 
       const result = await createCampaign.mutateAsync({
         name: values.name,
-        message_content: values.message_content,
+        message_content: contentMode === 'message' ? (values.message_content || '') : '',
         media_url: mediaUrl,
         media_type: mediaUrl ? 'image' : null,
+        automation_id: contentMode === 'automation' ? values.automation_id || null : null,
         min_interval_seconds: values.min_interval_minutes * 60,
         max_interval_seconds: values.max_interval_minutes * 60,
         batch_size: values.batch_size,
@@ -120,6 +145,7 @@ export function NewCampaignDialog({ open, onOpenChange, onSuccess }: NewCampaign
 
       form.reset();
       removeImage();
+      setContentMode('message');
       onSuccess(result);
     } catch (error: any) {
       console.error('Error creating campaign:', error);
@@ -153,67 +179,121 @@ export function NewCampaignDialog({ open, onOpenChange, onSuccess }: NewCampaign
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="message_content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mensagem</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Digite sua mensagem..."
-                      className="min-h-[100px]"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Use {'{nome}'} para personalizar com o nome do contato
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Content mode switcher */}
+            <div className="space-y-3">
+              <Label>Conteúdo</Label>
+              <Tabs value={contentMode} onValueChange={(v) => setContentMode(v as ContentMode)}>
+                <TabsList className="grid grid-cols-2 w-full">
+                  <TabsTrigger value="message" className="gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    Mensagem fixa
+                  </TabsTrigger>
+                  <TabsTrigger value="automation" className="gap-2">
+                    <Zap className="w-4 h-4" />
+                    Automação
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
 
-            {/* Image Upload */}
-            <div className="space-y-2">
-              <Label>Imagem (opcional)</Label>
-              {imagePreview ? (
-                <div className="relative w-32 h-32">
-                  <img 
-                    src={imagePreview} 
-                    alt="Preview" 
-                    className="w-full h-full object-cover rounded-lg"
+              {contentMode === 'message' && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="message_content"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Digite sua mensagem..."
+                            className="min-h-[100px]"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Use {'{nome}'} para personalizar com o nome do contato
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="absolute -top-2 -right-2 h-6 w-6"
-                    onClick={removeImage}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              ) : (
-                <label className="flex items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageSelect}
-                    className="hidden"
-                  />
-                  <div className="text-center">
-                    <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">Adicionar</span>
+
+                  {/* Image Upload */}
+                  <div className="space-y-2">
+                    <Label>Imagem (opcional)</Label>
+                    {imagePreview ? (
+                      <div className="relative w-32 h-32">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-6 w-6"
+                          onClick={removeImage}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <label className="flex items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="hidden"
+                        />
+                        <div className="text-center">
+                          <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">Adicionar</span>
+                        </div>
+                      </label>
+                    )}
                   </div>
-                </label>
+                </>
+              )}
+
+              {contentMode === 'automation' && (
+                <FormField
+                  control={form.control}
+                  name="automation_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione uma automação..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {automations.map((a) => (
+                              <SelectItem key={a.id} value={a.id}>
+                                {a.name}
+                              </SelectItem>
+                            ))}
+                            {automations.length === 0 && (
+                              <SelectItem value="__none__" disabled>
+                                Nenhuma automação cadastrada
+                              </SelectItem>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>
+                        A automação será disparada para cada contato da lista. Use o Flow Builder para montar a sequência de mensagens, delays e condições.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
             </div>
 
             {/* Interval Settings */}
             <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
               <h4 className="font-medium text-sm">Configurações de Segurança</h4>
-              
+
               <FormField
                 control={form.control}
                 name="min_interval_minutes"

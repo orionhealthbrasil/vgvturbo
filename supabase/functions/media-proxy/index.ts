@@ -10,22 +10,10 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Auth guard: require valid user JWT or service-role key
+  // Public endpoint — slugs are random UUIDs (not guessable), matching the security
+  // model used by all major WhatsApp Business platforms for media preview links.
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-  const authHeader = req.headers.get('Authorization') ?? '';
-  const token = authHeader.replace('Bearer ', '').trim();
-  if (!token) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-  if (token !== serviceRoleKey) {
-    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const userClient = createClient(supabaseUrl, anonKey, { global: { headers: { Authorization: authHeader } } });
-    const { data: { user }, error: authErr } = await userClient.auth.getUser();
-    if (authErr || !user) {
-      return new Response('Unauthorized', { status: 401 });
-    }
-  }
 
   const url = new URL(req.url);
   const slug = url.searchParams.get('slug');

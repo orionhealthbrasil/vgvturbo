@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Loader2 } from 'lucide-react';
-import { Search, Plus, User, Users, Image as ImageIcon, Mic, FileText, Video, Volume2, VolumeX, Filter, X, CheckCircle2, XCircle, CircleDollarSign, AlarmClock, Tag, Instagram, Archive, ArchiveRestore, CalendarClock, ListTodo, Power, PowerOff, Trash2, Pin, PinOff, EyeOff, Eye, SquareCheck } from 'lucide-react';
+import { Search, Plus, User, Users, Image as ImageIcon, Mic, FileText, Video, Filter, X, CheckCircle2, XCircle, CircleDollarSign, AlarmClock, Tag, Instagram, Archive, ArchiveRestore, CalendarClock, ListTodo, Power, PowerOff, Trash2, Pin, PinOff, EyeOff, Eye, SquareCheck } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -85,8 +85,6 @@ interface ContactListProps {
   onSelectContact: (contact: ContactWithColumn) => void;
   onNewConversation: () => void;
   isLoading: boolean;
-  isSoundEnabled?: boolean;
-  onToggleSound?: () => void;
   archivedContacts?: ContactWithColumn[];
   isLoadingArchived?: boolean;
   onArchiveContact?: (contactId: string, archive: boolean) => void;
@@ -104,8 +102,6 @@ export function ContactList({
   onSelectContact,
   onNewConversation,
   isLoading,
-  isSoundEnabled = true,
-  onToggleSound,
   archivedContacts = [],
   isLoadingArchived = false,
   onArchiveContact,
@@ -464,27 +460,6 @@ export function ContactList({
           </div>
           <div className="flex items-center gap-1">
             <AvailabilityToggle />
-            {onToggleSound && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    onClick={onToggleSound}
-                    className="h-8 w-8 p-0"
-                  >
-                    {isSoundEnabled ? (
-                      <Volume2 className="w-4 h-4 text-primary" />
-                    ) : (
-                      <VolumeX className="w-4 h-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {isSoundEnabled ? 'Som ativado' : 'Som desativado'}
-                </TooltipContent>
-              </Tooltip>
-            )}
             <Button size="sm" onClick={onNewConversation}>
               <Plus className="w-4 h-4 mr-1" />
               Novo

@@ -26,6 +26,7 @@ export interface BroadcastCampaign {
   completed_at: string | null;
   next_send_at: string | null;
   paused_until: string | null;
+  automation_id: string | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -107,6 +108,7 @@ export function useCreateBroadcastCampaign() {
           batch_pause_min_seconds: campaign.batch_pause_min_seconds || 300,
           batch_pause_max_seconds: campaign.batch_pause_max_seconds || 600,
           messages_per_hour_limit: campaign.messages_per_hour_limit || 30,
+          automation_id: campaign.automation_id || null,
           organization_id: orgData.organization.id,
           created_by: user.id,
         })
