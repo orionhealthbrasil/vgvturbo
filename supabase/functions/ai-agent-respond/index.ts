@@ -1203,13 +1203,19 @@ Não use [[SPLIT]] dentro de listas, blocos de código, URLs, ou em frases unit�
       console.warn("[ai-agent-respond][DIAG] log falhou:", e);
     }
 
-    // GPT-5.6 (sol/terra/luna) defaults reasoning_effort to "medium" when omitted, which
-    // is incompatible with function tools on Chat Completions — must be explicitly "none".
+    // GPT-5.6 (sol/terra/luna) defaults reasoning_effort to "medium" when omitted, which is
+    // incompatible with function tools on Chat Completions, and rejects max_tokens in favor
+    // of max_completion_tokens.
     const isGpt56 = useModel.startsWith("gpt-5.6");
 
     for (let i = 0; i < 5; i++) {
-      const openaiBody: any = { model: useModel, messages: openaiMessages, max_tokens: 1024, temperature: 0.7, tools, tool_choice: "auto" };
-      if (isGpt56) openaiBody.reasoning_effort = "none";
+      const openaiBody: any = { model: useModel, messages: openaiMessages, temperature: 0.7, tools, tool_choice: "auto" };
+      if (isGpt56) {
+        openaiBody.max_completion_tokens = 1024;
+        openaiBody.reasoning_effort = "none";
+      } else {
+        openaiBody.max_tokens = 1024;
+      }
 
       const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",

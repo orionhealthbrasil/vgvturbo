@@ -738,8 +738,9 @@ Deno.serve(async (req) => {
     let galleryAlreadySent = false;
 
     const sdrModel = agent.model || "gpt-4o-mini";
-    // GPT-5.6 (sol/terra/luna) defaults reasoning_effort to "medium" when omitted, which
-    // is incompatible with function tools on Chat Completions — must be explicitly "none".
+    // GPT-5.6 (sol/terra/luna) defaults reasoning_effort to "medium" when omitted, which is
+    // incompatible with function tools on Chat Completions, and rejects max_tokens in favor
+    // of max_completion_tokens.
     const isGpt56 = sdrModel.startsWith("gpt-5.6");
 
     for (let iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
@@ -751,9 +752,13 @@ Deno.serve(async (req) => {
         tools,
         tool_choice: "required",
         temperature: 0.7,
-        max_tokens: 600,
       };
-      if (isGpt56) sdrBody.reasoning_effort = "none";
+      if (isGpt56) {
+        sdrBody.max_completion_tokens = 600;
+        sdrBody.reasoning_effort = "none";
+      } else {
+        sdrBody.max_tokens = 600;
+      }
 
       const aiResp = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
