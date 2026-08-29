@@ -1,37 +1,20 @@
 import { useState } from 'react';
-import { Bot, Plus, Eye, EyeOff, Save, Loader2, Users } from 'lucide-react';
+import { Bot, Plus, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AgentCard } from '@/components/squad-ai/AgentCard';
 import { AgentFormDialog } from '@/components/squad-ai/AgentFormDialog';
 import { SystemAgentChat } from '@/components/squad-ai/SystemAgentChat';
-import { useAiAgents, useOrgOpenAiKey, useUpdateOrgOpenAiKey, AiAgent } from '@/hooks/useAiAgents';
-import { useUserOrganization } from '@/hooks/useOrganization';
+import { useAiAgents, AiAgent } from '@/hooks/useAiAgents';
+import { OrionCashPanel } from '@/components/orioncash/OrionCashPanel';
 
 export default function SquadAI() {
   const { data: agents, isLoading } = useAiAgents();
-  const { data: apiKey, isLoading: isLoadingKey } = useOrgOpenAiKey();
-  const updateKey = useUpdateOrgOpenAiKey();
-  const { data: orgData } = useUserOrganization();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAgent, setEditingAgent] = useState<AiAgent | null>(null);
-  const [showApiKey, setShowApiKey] = useState(false);
-  const [localKey, setLocalKey] = useState<string | null>(null);
   const [chattingAgent, setChattingAgent] = useState<AiAgent | null>(null);
-
-  const isOwner = orgData?.membership.role === 'owner';
-  const persistedKey = apiKey || '';
-  const displayKey = localKey !== null ? localKey : persistedKey;
-  const hasUnsavedChanges = localKey !== null && localKey !== persistedKey;
-
-  const handleSaveKey = () => {
-    updateKey.mutate(displayKey || null, {
-      onSuccess: () => setLocalKey(null),
-    });
-  };
 
   const handleEdit = (agent: AiAgent) => {
     setEditingAgent(agent);
@@ -62,55 +45,8 @@ export default function SquadAI() {
         </Button>
       </div>
 
-      {/* Shared API Key */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium">Chave da OpenAI (compartilhada)</CardTitle>
-          <CardDescription className="text-xs">
-            {isOwner
-              ? 'Todos os agentes usam esta chave para chamadas à API. O status abaixo reflete o valor salvo no backend.'
-              : 'Todos os agentes usam esta chave para chamadas à API. Apenas o proprietário da organização pode alterar esse valor.'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isLoadingKey ? (
-            <Skeleton className="h-9 w-full" />
-          ) : (
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <Input
-                  type={showApiKey ? 'text' : 'password'}
-                  value={displayKey}
-                  onChange={(e) => setLocalKey(e.target.value)}
-                  placeholder="sk-..."
-                  className="font-mono text-sm"
-                  disabled={!isOwner}
-                />
-                <Button variant="ghost" size="icon" onClick={() => setShowApiKey(!showApiKey)}>
-                  {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleSaveKey}
-                  disabled={updateKey.isPending || !hasUnsavedChanges || !isOwner}
-                >
-                  {updateKey.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                </Button>
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                {!isOwner
-                  ? 'Somente o proprietário da organização pode salvar ou remover a chave compartilhada.'
-                  : hasUnsavedChanges
-                    ? 'Há alterações não salvas nesta chave.'
-                    : persistedKey
-                      ? 'Chave salva e confirmada no backend da organização.'
-                      : 'Nenhuma chave compartilhada salva para esta organização.'}
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* VGVCash */}
+      <OrionCashPanel />
 
       {/* System Agent Chat */}
       {chattingAgent && (

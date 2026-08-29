@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useOrganizationStats, useOrganizationDetails, OrganizationStats } from '@/hooks/useSuperAdmin';
 import { OrganizationFeaturesCard } from '@/components/super-admin/OrganizationFeaturesCard';
+import { OrgOrionCashCard } from '@/components/super-admin/OrgOrionCashCard';
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -202,6 +203,14 @@ export default function SuperAdminOrganizations() {
 
               {/* Optional Modules */}
               {selectedOrgId && <OrganizationFeaturesCard organizationId={selectedOrgId} />}
+
+              {/* VGVCash */}
+              {selectedOrgId && orgDetails?.organization && (
+                <OrgOrionCashCard
+                  organizationId={selectedOrgId}
+                  organizationName={orgDetails.organization.name}
+                />
+              )}
             </div>
           ) : null}
         </DialogContent>

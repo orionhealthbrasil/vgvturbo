@@ -1184,6 +1184,22 @@ Não use [[SPLIT]] dentro de listas, blocos de código, URLs, ou em frases unit�
       }
     }
 
+    // ── VGVCash: verificar saldo antes de chamar a OpenAI ──
+    {
+      const { data: txRows } = await supabase
+        .from("credit_transactions")
+        .select("amount")
+        .eq("organization_id", organization_id);
+      const balance = (txRows || []).reduce((s: number, r: any) => s + Number(r.amount), 0);
+      if (balance <= 0) {
+        console.warn(`[ai-agent-respond] VGVCash insuficiente para org ${organization_id} (saldo: ${balance.toFixed(6)})`);
+        return new Response(
+          JSON.stringify({ skipped: true, reason: "insufficient_vgvcash", admin_message: "Saldo de VGVCash esgotado — recarregue em Squad AI" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+    }
+
     // Call OpenAI with tool loop (max 5 iterations for MCP tools)
     const useModel = agent.model || "gpt-4o-mini";
 
@@ -1246,6 +1262,40 @@ Não use [[SPLIT]] dentro de listas, blocos de código, URLs, ou em frases unit�
           return new Response(JSON.stringify({ error: "No response from AI" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
         const whatsappMessageId = await sendAiReplyParts(supabase, organization_id, contact.phone, aiReply, contact_id, agent);
+
+        // ── VGVCash: debitar custo real da resposta ──
+        const MODEL_PRICES: Record<string, { inM: number; outM: number }> = {
+          "gpt-5.6-sol":   { inM: 4.00,  outM: 20.00 },
+          "gpt-5.6-terra": { inM: 2.00,  outM: 12.00 },
+          "gpt-5.6-luna":  { inM: 0.20,  outM:  1.20 },
+          "gpt-4.1":       { inM: 2.00,  outM:  8.00 },
+          "gpt-4.1-mini":  { inM: 0.40,  outM:  1.60 },
+          "gpt-4.1-nano":  { inM: 0.10,  outM:  0.40 },
+          "gpt-4o":        { inM: 2.50,  outM: 10.00 },
+          "gpt-4o-mini":   { inM: 0.15,  outM:  0.60 },
+          "gpt-4.5":       { inM: 75.00, outM: 150.00 },
+        };
+        const prices = MODEL_PRICES[useModel] ?? { inM: 0.40, outM: 1.60 };
+        const aiCost = (
+          ((completion.usage?.prompt_tokens ?? 0) * prices.inM) +
+          ((completion.usage?.completion_tokens ?? 0) * prices.outM)
+        ) / 1_000_000;
+        if (aiCost > 0) {
+          supabase.from("credit_transactions").insert({
+            organization_id,
+            amount: -aiCost,
+            transaction_type: "debit",
+            description: `Resposta IA — ${useModel}`,
+            metadata: {
+              model: useModel,
+              prompt_tokens: completion.usage?.prompt_tokens,
+              completion_tokens: completion.usage?.completion_tokens,
+              contact_id,
+            },
+          }).then(({ error: debitErr }) => {
+            if (debitErr) console.error("[ai-agent-respond] VGVCash debit failed:", debitErr.message);
+          });
+        }
 
         // Event classifier: detect sales/tension and notify manager (fire-and-forget)
         const classifyAndNotify = async () => {
