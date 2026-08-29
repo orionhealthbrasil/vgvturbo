@@ -128,26 +128,48 @@ export function useReorderFunnelStages() {
 
   return useMutation({
     mutationFn: async (stages: { id: string; position: number }[]) => {
-      // Two-pass to avoid unique conflicts
-      for (let i = 0; i < stages.length; i++) {
-        const { error } = await supabase
-          .from('funnel_stages')
-          .update({ position: -(i + 1000) })
-          .eq('id', stages[i].id);
+      // Two-pass to avoid unique (organization_id, position) conflicts. Each pass
+      // runs in parallel — sequential awaits meant 2N round-trips for N stages.
+      await Promise.all(
+        stages.map(async (stage, i) => {
+          const { error } = await supabase
+            .from('funnel_stages')
+            .update({ position: -(i + 1000) })
+            .eq('id', stage.id);
+          if (error) throw error;
+        })
+      );
 
-        if (error) throw error;
-      }
-
-      for (const stage of stages) {
-        const { error } = await supabase
-          .from('funnel_stages')
-          .update({ position: stage.position })
-          .eq('id', stage.id);
-
-        if (error) throw error;
-      }
+      await Promise.all(
+        stages.map(async (stage) => {
+          const { error } = await supabase
+            .from('funnel_stages')
+            .update({ position: stage.position })
+            .eq('id', stage.id);
+          if (error) throw error;
+        })
+      );
     },
-    onSuccess: () => {
+    onMutate: async (stages) => {
+      await queryClient.cancelQueries({ queryKey: ['funnel-stages'] });
+      const previous = queryClient.getQueriesData<FunnelStage[]>({ queryKey: ['funnel-stages'] });
+
+      const positionById = new Map(stages.map((s) => [s.id, s.position]));
+      queryClient.setQueriesData<FunnelStage[]>({ queryKey: ['funnel-stages'] }, (old) => {
+        if (!old) return old;
+        return [...old]
+          .map((s) => (positionById.has(s.id) ? { ...s, position: positionById.get(s.id)! } : s))
+          .sort((a, b) => a.position - b.position);
+      });
+
+      return { previous };
+    },
+    onError: (_err, _stages, context) => {
+      context?.previous.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['funnel-stages'] });
     },
   });
