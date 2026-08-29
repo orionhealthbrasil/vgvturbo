@@ -51,23 +51,11 @@ export function OrgOrionCashCard({ organizationId, organizationName }: Props) {
 
   const addCredits = useMutation({
     mutationFn: async ({ amount, desc, subtype }: { amount: number; desc: string; subtype: 'purchased' | 'bonus' }) => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('Não autenticado');
-
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-add-credits`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({ organization_id: organizationId, amount, description: desc || undefined, credit_subtype: subtype }),
-        }
-      );
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Erro ao adicionar créditos');
-      return json;
+      const { data, error } = await supabase.functions.invoke('admin-add-credits', {
+        body: { organization_id: organizationId, amount, description: desc || undefined, credit_subtype: subtype },
+      });
+      if (error) throw new Error(data?.error || error.message || 'Erro ao adicionar créditos');
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orioncash-super', organizationId] });
