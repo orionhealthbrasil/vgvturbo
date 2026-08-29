@@ -9,6 +9,16 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Target,
@@ -45,7 +55,7 @@ interface GoalCardProps {
 }
 
 export function GoalCard({ goal, canManage, onEdit, onDelete, onArchive, onOpen }: GoalCardProps) {
-  const [confirmDel, setConfirmDel] = useState(false);
+  const [confirmDelOpen, setConfirmDelOpen] = useState(false);
   const total = goal.progress_total;
   const current = total?.current_value ?? 0;
   const percent = calcGoalPercent(goal.target_value, current);
@@ -112,24 +122,36 @@ export function GoalCard({ goal, canManage, onEdit, onDelete, onArchive, onOpen 
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => {
-                  if (confirmDel) {
-                    onDelete();
-                    setConfirmDel(false);
-                  } else {
-                    setConfirmDel(true);
-                    setTimeout(() => setConfirmDel(false), 3000);
-                  }
-                }}
+                onClick={() => setConfirmDelOpen(true)}
                 className="text-destructive focus:text-destructive"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                {confirmDel ? 'Confirmar exclusão' : 'Excluir'}
+                Excluir
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
       </div>
+
+      <AlertDialog open={confirmDelOpen} onOpenChange={setConfirmDelOpen}>
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir meta?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Isso vai excluir "{goal.title}" e todo o progresso registrado. Essa ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={onDelete}
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="space-y-2 mb-3">
         <div className="flex items-baseline justify-between gap-2">
