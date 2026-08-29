@@ -149,7 +149,8 @@ export function GoalFormDialog({ open, onOpenChange, goal }: GoalFormDialogProps
       toast.error('Defina um título para a meta');
       return;
     }
-    const targetNum = Number(target.replace(',', '.'));
+    // Formato brasileiro: "." é separador de milhar, "," é decimal (ex: "50.000,00" = 50000).
+    const targetNum = Number(target.trim().replace(/\./g, '').replace(',', '.'));
     if (isNaN(targetNum) || targetNum <= 0) {
       toast.error('Valor-alvo inválido');
       return;
