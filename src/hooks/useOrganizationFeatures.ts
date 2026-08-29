@@ -3,7 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useUserOrganization } from '@/hooks/useOrganization';
 import { toast } from 'sonner';
 
-export type FeatureKey = 'financial';
+export type FeatureKey = 'financial' | 'ai_transcription' | 'ai_image_description';
+
+/** Features que vêm ATIVADAS por padrão (sem linha em organization_features = habilitada). */
+export const DEFAULT_ENABLED_FEATURES: FeatureKey[] = ['ai_transcription', 'ai_image_description'];
 
 export interface OrganizationFeature {
   id: string;
@@ -30,7 +33,8 @@ export function useHasFeature(feature: FeatureKey) {
         .eq('feature_key', feature)
         .maybeSingle();
       if (error) throw error;
-      return !!data?.is_enabled;
+      if (!data) return DEFAULT_ENABLED_FEATURES.includes(feature);
+      return !!data.is_enabled;
     },
   });
 }

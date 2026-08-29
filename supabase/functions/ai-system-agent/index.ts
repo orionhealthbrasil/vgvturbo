@@ -46,10 +46,41 @@ function normalizeOpenAiKey(value?: string | null): string | null {
   return normalized ? normalized : null;
 }
 
+async function getVgvCashBalance(supabase: any, organizationId: string): Promise<number> {
+  const { data } = await supabase.from("credit_transactions").select("amount").eq("organization_id", organizationId);
+  return (data || []).reduce((s: number, r: any) => s + Number(r.amount), 0);
+}
+
+const MODEL_PRICES: Record<string, { inM: number; outM: number }> = {
+  "gpt-5.6-sol":   { inM: 4.00,  outM: 20.00 },
+  "gpt-5.6-terra": { inM: 2.00,  outM: 12.00 },
+  "gpt-5.6-luna":  { inM: 0.20,  outM:  1.20 },
+  "gpt-4.1":       { inM: 2.00,  outM:  8.00 },
+  "gpt-4.1-mini":  { inM: 0.40,  outM:  1.60 },
+  "gpt-4.1-nano":  { inM: 0.10,  outM:  0.40 },
+  "gpt-4o":        { inM: 2.50,  outM: 10.00 },
+  "gpt-4o-mini":   { inM: 0.15,  outM:  0.60 },
+  "gpt-4.5":       { inM: 75.00, outM: 150.00 },
+};
+
+function debitVgvCash(supabase: any, organizationId: string, amount: number, description: string, metadata: Record<string, unknown>) {
+  if (!(amount > 0)) return;
+  supabase.from("credit_transactions").insert({
+    organization_id: organizationId,
+    amount: -amount,
+    transaction_type: "debit",
+    description,
+    metadata,
+  }).then(({ error }: any) => {
+    if (error) console.error("[ai-system-agent] VGVCash debit failed:", error.message);
+  });
+}
+
 async function resolveOpenAiKey(supabase: any, organizationId: string) {
-  const [orgRes, legacyRes] = await Promise.all([
+  const [orgRes, legacyRes, platformRes] = await Promise.all([
     supabase.from("organizations").select("openai_api_key").eq("id", organizationId).single(),
     supabase.from("ai_agent_config").select("openai_api_key").eq("organization_id", organizationId).limit(1).maybeSingle(),
+    supabase.from("platform_settings").select("openai_api_key").eq("id", true).maybeSingle(),
   ]);
 
   if (orgRes.error) throw orgRes.error;
@@ -60,6 +91,10 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
 
   const legacyKey = normalizeOpenAiKey(legacyRes.data?.openai_api_key);
   if (legacyKey) return { openaiApiKey: legacyKey, keySource: "ai_agent_config" as const };
+
+  if (platformRes.error) console.warn("[ai-system-agent] Platform key lookup failed:", platformRes.error.message);
+  const platformKey = normalizeOpenAiKey(platformRes.data?.openai_api_key);
+  if (platformKey) return { openaiApiKey: platformKey, keySource: "platform" as const };
 
   return { openaiApiKey: null, keySource: null };
 }
@@ -966,11 +1001,21 @@ Deno.serve(async (req) => {
     if (!openaiApiKey) {
       log("no_openai_key", {});
       return new Response(
-        JSON.stringify({ content: "⚠️ Nenhuma chave da OpenAI configurada. Configure em Squad AI → Chave da OpenAI (compartilhada) para começar a usar os agentes.", tool_calls: [], trace_id: traceId, openai_error: true }),
+        JSON.stringify({ content: "⚠️ Nenhuma chave da OpenAI configurada para a plataforma. Peça ao Super Admin para configurar em Configurações → Chave da OpenAI.", tool_calls: [], trace_id: traceId, openai_error: true }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json", "x-trace-id": traceId } },
       );
     }
     log("agent_loaded", { model: agent.model || "gpt-4o-mini", key_source: keySource, max_context: agent.max_context_messages });
+
+    // VGVCash: nenhuma chamada de IA roda sem saldo.
+    const vgvCashBalance = await getVgvCashBalance(supabase, organization_id);
+    if (vgvCashBalance <= 0) {
+      log("insufficient_vgvcash", { balance: vgvCashBalance });
+      return new Response(
+        JSON.stringify({ content: "⚠️ Saldo de VGVCash esgotado para esta organização. Recarregue em Squad AI para continuar usando a IA.", tool_calls: [], trace_id: traceId, openai_error: true }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json", "x-trace-id": traceId } },
+      );
+    }
 
     // Regras de uso de ferramentas (injetadas em todos os agentes para evitar alucinação)
     const TOOL_USAGE_RULES = `\n\n## Regras de uso de ferramentas (obrigatórias)
@@ -1155,6 +1200,20 @@ REGRAS OBRIGATÓRIAS:
       const choice = completion.choices?.[0];
       const msg = choice?.message;
       lastFinishReason = choice?.finish_reason || "";
+
+      // VGVCash: debita o custo real desta chamada (cada iteração do loop é uma chamada faturável à OpenAI).
+      const systemAgentPrices = MODEL_PRICES[systemAgentModel] ?? { inM: 0.40, outM: 1.60 };
+      const systemAgentCallCost = (
+        ((completion.usage?.prompt_tokens ?? 0) * systemAgentPrices.inM) +
+        ((completion.usage?.completion_tokens ?? 0) * systemAgentPrices.outM)
+      ) / 1_000_000;
+      debitVgvCash(supabase, organization_id, systemAgentCallCost, `Agente de sistema — ${systemAgentModel}`, {
+        model: systemAgentModel,
+        prompt_tokens: completion.usage?.prompt_tokens,
+        completion_tokens: completion.usage?.completion_tokens,
+        agent_id,
+        iteration: iterations,
+      });
 
       log("openai_response", {
         iteration: iterations,

@@ -62,7 +62,7 @@ function normalizeTime(value: unknown, fallback: string): string {
 }
 
 async function resolveOpenAiKey(supabase: any, organizationId: string) {
-  const [orgRes, legacyRes] = await Promise.all([
+  const [orgRes, legacyRes, platformRes] = await Promise.all([
     supabase
       .from("organizations")
       .select("openai_api_key")
@@ -74,6 +74,11 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
       .select("openai_api_key")
       .eq("organization_id", organizationId)
       .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("platform_settings")
+      .select("openai_api_key")
+      .eq("id", true)
       .maybeSingle(),
   ]);
 
@@ -99,8 +104,20 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
     };
   }
 
+  const platformKey = normalizeOpenAiKey(platformRes.data?.openai_api_key);
+  if (platformKey) {
+    return {
+      openaiApiKey: platformKey,
+      keySource: "platform" as const,
+      keyLookupError: orgRes.error?.message || legacyRes.error?.message || platformRes.error?.message || null,
+    };
+  }
+
   if (legacyRes.error) {
     console.warn(`[ai-agent-respond] Legacy key lookup failed for org ${organizationId}: ${legacyRes.error.message}`);
+  }
+  if (platformRes.error) {
+    console.warn(`[ai-agent-respond] Platform key lookup failed: ${platformRes.error.message}`);
   }
 
   if (orgRes.error) {
@@ -111,7 +128,7 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
   return {
     openaiApiKey: null,
     keySource: null,
-    keyLookupError: legacyRes.error?.message || null,
+    keyLookupError: legacyRes.error?.message || platformRes.error?.message || null,
   };
 }
 

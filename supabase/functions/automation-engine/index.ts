@@ -11,7 +11,7 @@ function normalizeOpenAiKey(value?: string | null): string | null {
 }
 
 async function resolveOpenAiKey(supabase: any, organizationId: string) {
-  const [orgRes, legacyRes] = await Promise.all([
+  const [orgRes, legacyRes, platformRes] = await Promise.all([
     supabase
       .from('organizations')
       .select('openai_api_key')
@@ -23,6 +23,11 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
       .eq('organization_id', organizationId)
       .limit(1)
       .maybeSingle(),
+    supabase
+      .from('platform_settings')
+      .select('openai_api_key')
+      .eq('id', true)
+      .maybeSingle(),
   ]);
 
   if (orgRes.error) throw orgRes.error;
@@ -33,6 +38,10 @@ async function resolveOpenAiKey(supabase: any, organizationId: string) {
 
   const legacyKey = normalizeOpenAiKey(legacyRes.data?.openai_api_key);
   if (legacyKey) return { openaiApiKey: legacyKey, keySource: 'ai_agent_config' as const };
+
+  if (platformRes.error) console.warn('[automation-engine] Platform key lookup failed:', platformRes.error.message);
+  const platformKey = normalizeOpenAiKey(platformRes.data?.openai_api_key);
+  if (platformKey) return { openaiApiKey: platformKey, keySource: 'platform' as const };
 
   return { openaiApiKey: null, keySource: null };
 }

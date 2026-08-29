@@ -1,4 +1,4 @@
-import { LayoutDashboard, Building2, Users, LogOut, ArrowLeft, TrendingUp, Headphones, CalendarRange, KeyRound, FileText } from 'lucide-react';
+import { LayoutDashboard, Building2, Users, LogOut, ArrowLeft, TrendingUp, Headphones, CalendarRange, KeyRound, FileText, Settings } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +27,7 @@ const navItems = [
   { title: 'Templates de Agenda', url: '/super-admin/calendar-templates', icon: CalendarRange },
   { title: 'Blog', url: '/super-admin/blog', icon: FileText },
   { title: 'Chamados', url: '/super-admin/suporte', icon: Headphones, showBadge: true },
+  { title: 'Configurações', url: '/super-admin/settings', icon: Settings },
 ];
 
 export function SuperAdminSidebar() {

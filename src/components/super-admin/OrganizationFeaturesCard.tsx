@@ -1,4 +1,4 @@
-import { Wallet, Loader2 } from 'lucide-react';
+import { Wallet, Loader2, Mic, ImageIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -14,6 +14,21 @@ const FEATURES = [
     icon: Wallet,
     title: 'Financeiro',
     description: 'Lançamentos, recorrências, contas, categorias e relatórios financeiros.',
+    defaultEnabled: false,
+  },
+  {
+    key: 'ai_transcription' as const,
+    icon: Mic,
+    title: 'Transcrição de áudio (IA)',
+    description: 'Transcreve áudios recebidos no WhatsApp via Whisper. Consome VGVCash a cada uso.',
+    defaultEnabled: true,
+  },
+  {
+    key: 'ai_image_description' as const,
+    icon: ImageIcon,
+    title: 'Descrição de imagens/vídeos (IA)',
+    description: 'Descreve o conteúdo de fotos e vídeos recebidos no WhatsApp. Consome VGVCash a cada uso.',
+    defaultEnabled: true,
   },
 ];
 
@@ -31,7 +46,7 @@ export function OrganizationFeaturesCard({ organizationId }: Props) {
           <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
         ) : (
           FEATURES.map((f) => {
-            const enabled = features.find((x) => x.feature_key === f.key)?.is_enabled ?? false;
+            const enabled = features.find((x) => x.feature_key === f.key)?.is_enabled ?? f.defaultEnabled;
             const Icon = f.icon;
             return (
               <div key={f.key} className="flex items-center justify-between p-3 border rounded-lg gap-3">

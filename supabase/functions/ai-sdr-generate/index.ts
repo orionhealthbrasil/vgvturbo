@@ -16,12 +16,47 @@ function normalizeOpenAiKey(value?: string | null): string | null {
   return v ? v : null;
 }
 
+async function getVgvCashBalance(supabase: any, organizationId: string): Promise<number> {
+  const { data } = await supabase.from("credit_transactions").select("amount").eq("organization_id", organizationId);
+  return (data || []).reduce((s: number, r: any) => s + Number(r.amount), 0);
+}
+
+const MODEL_PRICES: Record<string, { inM: number; outM: number }> = {
+  "gpt-5.6-sol":   { inM: 4.00,  outM: 20.00 },
+  "gpt-5.6-terra": { inM: 2.00,  outM: 12.00 },
+  "gpt-5.6-luna":  { inM: 0.20,  outM:  1.20 },
+  "gpt-4.1":       { inM: 2.00,  outM:  8.00 },
+  "gpt-4.1-mini":  { inM: 0.40,  outM:  1.60 },
+  "gpt-4.1-nano":  { inM: 0.10,  outM:  0.40 },
+  "gpt-4o":        { inM: 2.50,  outM: 10.00 },
+  "gpt-4o-mini":   { inM: 0.15,  outM:  0.60 },
+  "gpt-4.5":       { inM: 75.00, outM: 150.00 },
+};
+
+function debitVgvCash(supabase: any, organizationId: string, amount: number, description: string, metadata: Record<string, unknown>) {
+  if (!(amount > 0)) return;
+  supabase.from("credit_transactions").insert({
+    organization_id: organizationId,
+    amount: -amount,
+    transaction_type: "debit",
+    description,
+    metadata,
+  }).then(({ error }: any) => {
+    if (error) console.error("[ai-sdr-generate] VGVCash debit failed:", error.message);
+  });
+}
+
 async function resolveOpenAiKey(supabase: any, organizationId: string): Promise<string | null> {
-  const [orgRes, legacyRes] = await Promise.all([
+  const [orgRes, legacyRes, platformRes] = await Promise.all([
     supabase.from("organizations").select("openai_api_key").eq("id", organizationId).maybeSingle(),
     supabase.from("ai_agent_config").select("openai_api_key").eq("organization_id", organizationId).maybeSingle(),
+    supabase.from("platform_settings").select("openai_api_key").eq("id", true).maybeSingle(),
   ]);
-  return normalizeOpenAiKey(orgRes.data?.openai_api_key) || normalizeOpenAiKey(legacyRes.data?.openai_api_key);
+  return (
+    normalizeOpenAiKey(orgRes.data?.openai_api_key) ||
+    normalizeOpenAiKey(legacyRes.data?.openai_api_key) ||
+    normalizeOpenAiKey(platformRes.data?.openai_api_key)
+  );
 }
 
 function buildOperatingHoursLine(org: any): string {
@@ -597,6 +632,15 @@ Deno.serve(async (req) => {
       });
     }
 
+    // VGVCash: nenhuma chamada de IA roda sem saldo.
+    const vgvCashBalance = await getVgvCashBalance(supabase, contact.organization_id);
+    if (vgvCashBalance <= 0) {
+      console.log(`[ai-sdr-generate] skip=insufficient_vgvcash org=${contact.organization_id} (saldo: ${vgvCashBalance.toFixed(6)})`);
+      return new Response(JSON.stringify({ skipped: true, reason: "insufficient_vgvcash" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // ── Debounce: wait for the user to finish typing ──
     // If another inbound message arrives during the wait, this invocation is stale — abort.
     const DEBOUNCE_MS = Number(Deno.env.get("AI_DEBOUNCE_MS") || 5000);
@@ -786,6 +830,20 @@ Deno.serve(async (req) => {
       const aiData = await aiResp.json();
       const assistantMessage = aiData.choices?.[0]?.message;
       messages.push(assistantMessage);
+
+      // VGVCash: debita o custo real desta chamada (cada iteração do loop é uma chamada faturável à OpenAI).
+      const sdrPrices = MODEL_PRICES[sdrModel] ?? { inM: 0.40, outM: 1.60 };
+      const sdrCallCost = (
+        ((aiData.usage?.prompt_tokens ?? 0) * sdrPrices.inM) +
+        ((aiData.usage?.completion_tokens ?? 0) * sdrPrices.outM)
+      ) / 1_000_000;
+      debitVgvCash(supabase, contact.organization_id, sdrCallCost, `SDR — ${sdrModel}`, {
+        model: sdrModel,
+        prompt_tokens: aiData.usage?.prompt_tokens,
+        completion_tokens: aiData.usage?.completion_tokens,
+        contact_id: contact.id,
+        iteration,
+      });
 
       const toolCalls: any[] = assistantMessage?.tool_calls || [];
 

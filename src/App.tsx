@@ -52,6 +52,7 @@ import ForceLogout from "@/pages/ForceLogout";
 import NotFound from "./pages/NotFound";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import SuperAdminOrganizations from "@/pages/super-admin/SuperAdminOrganizations";
+import SuperAdminSettings from "@/pages/super-admin/SuperAdminSettings";
 import SuperAdminUsers from "@/pages/super-admin/SuperAdminUsers";
 import SuperAdminPerformance from "@/pages/super-admin/SuperAdminPerformance";
 import SuperAdminCalendarTemplates from "@/pages/super-admin/SuperAdminCalendarTemplates";
@@ -397,6 +398,18 @@ const App = () => (
                   <SuperAdminGuard>
                     <SuperAdminLayout>
                       <SuperAdminOrganizations />
+                    </SuperAdminLayout>
+                  </SuperAdminGuard>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/super-admin/settings"
+              element={
+                <ProtectedRoute>
+                  <SuperAdminGuard>
+                    <SuperAdminLayout>
+                      <SuperAdminSettings />
                     </SuperAdminLayout>
                   </SuperAdminGuard>
                 </ProtectedRoute>

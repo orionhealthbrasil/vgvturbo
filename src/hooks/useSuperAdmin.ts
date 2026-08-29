@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -192,5 +192,38 @@ export function useOrganizationDetails(organizationId: string | null) {
       };
     },
     enabled: !!isSuperAdmin && !!organizationId,
+  });
+}
+
+/**
+ * Chave da OpenAI usada como fallback por todas as organizações que não têm
+ * (ou não devem ter, no modelo de créditos VGVCash) sua própria chave.
+ */
+export function usePlatformOpenAiKey() {
+  const { data: isSuperAdmin } = useIsSuperAdmin();
+
+  return useQuery({
+    queryKey: ['platform-openai-key'],
+    enabled: !!isSuperAdmin,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_platform_openai_api_key' as any);
+      if (error) throw error;
+      const key = data as unknown as string | null;
+      return typeof key === 'string' && key.trim().length > 0 ? key.trim() : null;
+    },
+  });
+}
+
+export function useUpdatePlatformOpenAiKey() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (key: string | null) => {
+      const { error } = await supabase.rpc('set_platform_openai_api_key' as any, { p_key: key || '' });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['platform-openai-key'] });
+    },
   });
 }
