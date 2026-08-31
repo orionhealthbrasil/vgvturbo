@@ -37,10 +37,18 @@ export function FunnelStageActions({ contact, messagesCount }: FunnelStageAction
   
   const sortedStages = [...stages].sort((a, b) => a.position - b.position);
   const currentStage = sortedStages.find(s => s.slug === contact.funnel_stage) || sortedStages[0];
-  const currentIndex = sortedStages.findIndex(s => s.slug === contact.funnel_stage);
-  // Next stage = next in-progress stage (skip won/lost terminal stages from CTA flow)
+
+  // Quando contact.pipeline_id é null (contatos legados), ancora ao pipeline do estágio atual
+  const effectivePipelineId = contact.pipeline_id ?? currentStage?.pipeline_id ?? null;
+  const pipelineStages = effectivePipelineId
+    ? sortedStages.filter(s => s.pipeline_id === effectivePipelineId)
+    : sortedStages;
+
+  const currentIndex = pipelineStages.findIndex(s => s.slug === contact.funnel_stage);
+  // Next stage = next in-progress stage (skip won/lost terminal stages from CTA flow),
+  // sempre dentro do mesmo pipeline do estágio atual
   const nextStage = currentIndex >= 0
-    ? sortedStages.slice(currentIndex + 1).find(s => (s.stage_type || 'in_progress') === 'in_progress') || null
+    ? pipelineStages.slice(currentIndex + 1).find(s => (s.stage_type || 'in_progress') === 'in_progress') || null
     : null;
 
   const isDisabled = messagesCount === 0;
@@ -81,7 +89,7 @@ export function FunnelStageActions({ contact, messagesCount }: FunnelStageAction
     }
 
     try {
-      const finalStage = sortedStages.find(s => s.is_final);
+      const finalStage = pipelineStages.find(s => s.is_final);
       const finalStageName = finalStage?.name || 'Fechamento';
       const previousStage = currentStage;
 
@@ -142,7 +150,7 @@ export function FunnelStageActions({ contact, messagesCount }: FunnelStageAction
   const handleCloseAsOther = async () => {
     setIsClosingOther(true);
     try {
-      const finalStage = sortedStages.find(s => s.is_final);
+      const finalStage = pipelineStages.find(s => s.is_final);
       const previousStage = currentStage;
 
       await updateContact.mutateAsync({
