@@ -154,6 +154,33 @@ function extractPhoneNumber(jid: string): string {
   return jidWithoutDevice.replace(/[^0-9]/g, '');
 }
 
+// POST /group/info returns HTTP 500 on Stevo (bug on their side). GET /group/list
+// works and returns every group with its JID and Name, so we fetch the whole list
+// and find the one we need.
+async function fetchGroupSubject(baseUrl: string | null | undefined, apiKey: string | null | undefined, groupJid: string): Promise<string | null> {
+  if (!baseUrl || !apiKey) return null;
+  try {
+    const base = baseUrl.replace(/\/+$/, '');
+    const res = await fetch(`${base}/group/list`, {
+      method: 'GET',
+      headers: { apikey: apiKey },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return null;
+    const raw = await res.json();
+    const list: any[] = Array.isArray(raw) ? raw : (raw?.data ?? raw?.groups ?? []);
+    const match = list.find((g: any) => {
+      const gid = g.JID ?? g.id ?? g.remoteJid ?? g.jid ?? '';
+      return gid === groupJid;
+    });
+    if (!match) return null;
+    const subject = match.Name ?? match.subject ?? match.name ?? match.title ?? null;
+    return typeof subject === 'string' && subject.trim() ? subject.trim() : null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Normalize Brazilian mobile phone numbers.
  * Brazilian mobile numbers should be: 55 + DDD(2 digits) + 9 + number(8 digits) = 13 digits
@@ -820,7 +847,7 @@ Deno.serve(async (req) => {
     // Find organization by instance name from whatsapp_instances table
     const { data: instanceData, error: instanceError } = await supabase
       .from('whatsapp_instances')
-      .select('organization_id, owner_jid')
+      .select('organization_id, owner_jid, api_key, base_url')
       .eq('instance_name', instanceName)
       .single();
 
@@ -994,10 +1021,8 @@ Deno.serve(async (req) => {
       if (isGroup) {
         // For groups, the "phone" is the group JID number (without @g.us)
         phone = extractPhoneNumber(jid);
-        // PushName in group context is the SENDER's name, not the group name
-        // Use a default group name; the actual group subject is not in the webhook payload
-        // We'll only set name on creation, not override existing group names
-        contactName = `Grupo ${phone}`;
+        const groupSubject = await fetchGroupSubject(instanceData?.base_url, instanceData?.api_key, jid);
+        contactName = groupSubject || `Grupo ${phone}`;
         console.log(`Group contact: phone=${phone}, name=${contactName}, jid=${groupJid}`);
       } else {
         // DM logic - resolve LIDs and normalize phone
@@ -1155,10 +1180,11 @@ Deno.serve(async (req) => {
         contactStatus = existingContact.status;
         contactFunnelStage = existingContact.funnel_stage;
         
-        // For groups, DON'T overwrite name (user may have renamed it manually)
-        // For DMs, only update if current name is just a phone number
+        // For groups, only overwrite the old "Grupo 12345..." placeholder name — never a
+        // name the user set manually. For DMs, only update if current name is just a phone number.
+        const groupNameIsDefault = isGroup && /^Grupo \d+$/.test(existingContact.name || '');
         const currentNameIsPhone = existingContact.name === phone || /^\+?\d+$/.test(existingContact.name || '');
-        const shouldUpdateName = !isGroup && contactName && currentNameIsPhone;
+        const shouldUpdateName = contactName && (groupNameIsDefault || (!isGroup && currentNameIsPhone));
         
         // Build update payload
         const contactUpdateData: Record<string, any> = {};
