@@ -28,7 +28,6 @@ const createInternalChatSound = (audioContext: AudioContext) => {
 export function useNotificationSound() {
   const whatsappAudioRef = useRef<HTMLAudioElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const isUnlockedRef = useRef(false);
 
   // Start from localStorage so UI is instant; sync with DB in the background
   const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
@@ -60,29 +59,7 @@ export function useNotificationSound() {
     whatsappAudioRef.current.volume = 0.7;
     whatsappAudioRef.current.preload = 'auto';
 
-    const unlockAudio = () => {
-      if (!isUnlockedRef.current) {
-        if (whatsappAudioRef.current) {
-          whatsappAudioRef.current.play().then(() => {
-            whatsappAudioRef.current?.pause();
-            whatsappAudioRef.current!.currentTime = 0;
-          }).catch(() => {});
-        }
-        if (!audioContextRef.current) {
-          audioContextRef.current = new AudioContext();
-        }
-        isUnlockedRef.current = true;
-      }
-    };
-
-    document.addEventListener('click', unlockAudio, { once: false });
-    document.addEventListener('keydown', unlockAudio, { once: false });
-    document.addEventListener('touchstart', unlockAudio, { once: false });
-
     return () => {
-      document.removeEventListener('click', unlockAudio);
-      document.removeEventListener('keydown', unlockAudio);
-      document.removeEventListener('touchstart', unlockAudio);
       if (audioContextRef.current) {
         audioContextRef.current.close();
       }
