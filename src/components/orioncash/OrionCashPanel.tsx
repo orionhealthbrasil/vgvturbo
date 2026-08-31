@@ -51,16 +51,17 @@ function TxRow({ tx }: { tx: CreditTransaction }) {
 }
 
 export function OrionCashPanel({ isAdmin }: OrionCashPanelProps) {
-  const { balance, transactions, isLoading } = useOrionCash();
+  const { balance, transactions, ledgerRows, isLoading } = useOrionCash();
 
   const balanceOc = usdToOc(balance);
   const isLow = balance > 0 && balanceOc < 10;
   const isDepleted = balance <= 0;
 
-  // Estatísticas de créditos comprados vs bônus
-  const purchasedOc = usdToOc(transactions.filter(t => t.credit_subtype === 'purchased').reduce((s, t) => s + Number(t.amount), 0));
-  const bonusOc     = usdToOc(transactions.filter(t => t.credit_subtype === 'bonus').reduce((s, t) => s + Number(t.amount), 0));
-  const debitedOc   = usdToOc(Math.abs(transactions.filter(t => t.transaction_type === 'debit').reduce((s, t) => s + Number(t.amount), 0)));
+  // Estatísticas de créditos comprados vs bônus — calculadas sobre o ledger completo,
+  // não sobre a lista de transações recentes exibida (que é limitada para não crescer sem fim).
+  const purchasedOc = usdToOc(ledgerRows.filter(t => t.credit_subtype === 'purchased').reduce((s, t) => s + Number(t.amount), 0));
+  const bonusOc     = usdToOc(ledgerRows.filter(t => t.credit_subtype === 'bonus').reduce((s, t) => s + Number(t.amount), 0));
+  const debitedOc   = usdToOc(Math.abs(ledgerRows.filter(t => t.transaction_type === 'debit').reduce((s, t) => s + Number(t.amount), 0)));
 
   return (
     <div className="space-y-6">
@@ -194,9 +195,9 @@ export function OrionCashPanel({ isAdmin }: OrionCashPanelProps) {
           ) : transactions.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-10">Nenhuma transação ainda.</p>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="max-h-[420px] overflow-y-auto overflow-x-auto">
               <Table>
-                <TableHeader>
+                <TableHeader className="sticky top-0 bg-card z-10">
                   <TableRow>
                     <TableHead>Descrição</TableHead>
                     <TableHead className="text-right">VGVCash</TableHead>

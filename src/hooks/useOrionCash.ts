@@ -23,12 +23,38 @@ export interface CreditTransaction {
   created_at: string;
 }
 
+export interface CreditLedgerRow {
+  amount: number;
+  transaction_type: 'credit' | 'debit' | 'adjustment';
+  credit_subtype: 'purchased' | 'bonus' | null;
+}
+
+const RECENT_TRANSACTIONS_LIMIT = 50;
+
 export function useOrionCash() {
   const { data: orgData } = useUserOrganization();
   const orgId = orgData?.organization.id;
 
-  const query = useQuery({
-    queryKey: ['orioncash', orgId],
+  // Saldo real: soma de TODAS as transações — nunca limitar essa consulta, ou
+  // o saldo passa a refletir só a "janela" mais recente (e o crédito original
+  // some do cálculo assim que o histórico de débitos ultrapassa o limite).
+  const ledgerQuery = useQuery({
+    queryKey: ['orioncash-ledger', orgId],
+    enabled: !!orgId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('credit_transactions')
+        .select('amount, transaction_type, credit_subtype')
+        .eq('organization_id', orgId!);
+      if (error) throw error;
+      return (data || []) as CreditLedgerRow[];
+    },
+    refetchInterval: 30_000,
+  });
+
+  // Histórico exibido na tela: só os mais recentes, para não crescer sem limite.
+  const recentQuery = useQuery({
+    queryKey: ['orioncash-recent', orgId],
     enabled: !!orgId,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -36,7 +62,7 @@ export function useOrionCash() {
         .select('*')
         .eq('organization_id', orgId!)
         .order('created_at', { ascending: false })
-        .limit(100);
+        .limit(RECENT_TRANSACTIONS_LIMIT);
 
       if (error) throw error;
       return data as CreditTransaction[];
@@ -44,13 +70,18 @@ export function useOrionCash() {
     refetchInterval: 30_000,
   });
 
-  const balance = (query.data || []).reduce((sum, t) => sum + Number(t.amount), 0);
+  const ledgerRows = ledgerQuery.data || [];
+  const balance = ledgerRows.reduce((sum, t) => sum + Number(t.amount), 0);
 
   return {
-    transactions: query.data || [],
+    transactions: recentQuery.data || [],
+    ledgerRows,
     balance,
-    isLoading: query.isLoading,
-    refetch: query.refetch,
+    isLoading: ledgerQuery.isLoading || recentQuery.isLoading,
+    refetch: () => {
+      ledgerQuery.refetch();
+      recentQuery.refetch();
+    },
   };
 }
 
@@ -72,7 +103,8 @@ export function useAddCredits() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orioncash'] });
+      queryClient.invalidateQueries({ queryKey: ['orioncash-ledger'] });
+      queryClient.invalidateQueries({ queryKey: ['orioncash-recent'] });
     },
   });
 }

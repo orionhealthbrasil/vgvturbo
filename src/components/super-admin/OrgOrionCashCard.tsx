@@ -31,8 +31,24 @@ export function OrgOrionCashCard({ organizationId, organizationName }: Props) {
   const [ocAmount, setOcAmount] = useState('');
   const [description, setDescription] = useState('');
 
-  const { data: txRows = [], isLoading } = useQuery({
-    queryKey: ['orioncash-super', organizationId],
+  // Saldo real: soma de TODAS as transações. Nunca calcular a partir de uma
+  // consulta paginada/limitada — assim que o histórico de débitos ultrapassa
+  // o limite, o crédito original sai da janela e o saldo calculado fica errado.
+  const { data: balance = 0, isLoading: isLoadingBalance } = useQuery({
+    queryKey: ['orioncash-super-balance', organizationId],
+    enabled: !!organizationId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('credit_transactions')
+        .select('amount')
+        .eq('organization_id', organizationId);
+      if (error) throw error;
+      return (data || []).reduce((s, t) => s + Number(t.amount), 0);
+    },
+  });
+
+  const { data: txRows = [], isLoading: isLoadingRecent } = useQuery({
+    queryKey: ['orioncash-super-recent', organizationId],
     enabled: !!organizationId,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -46,7 +62,7 @@ export function OrgOrionCashCard({ organizationId, organizationName }: Props) {
     },
   });
 
-  const balance = txRows.reduce((s, t) => s + Number(t.amount), 0);
+  const isLoading = isLoadingBalance || isLoadingRecent;
   const balanceOc = usdToOc(balance);
 
   const addCredits = useMutation({
@@ -58,7 +74,8 @@ export function OrgOrionCashCard({ organizationId, organizationName }: Props) {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orioncash-super', organizationId] });
+      queryClient.invalidateQueries({ queryKey: ['orioncash-super-balance', organizationId] });
+      queryClient.invalidateQueries({ queryKey: ['orioncash-super-recent', organizationId] });
     },
   });
 
